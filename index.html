@@ -13,7 +13,6 @@
         .bg-primary { background-color: var(--p-color); }
         .text-primary { color: var(--p-color); }
         
-        /* New Offer Animation */
         .offer-glow { 
             animation: pulse-gold 2s infinite; 
             border-bottom: 2px solid #ffd700;
@@ -225,10 +224,10 @@
             .then(() => {
                 confetti();
                 document.getElementById('thank-you-screen').style.display = 'flex';
-                // No WhatsApp Redirect here anymore!
             });
         }
 
+        // UPGRADED TRACK SYSTEM
         function trackOrder() {
             const ph = document.getElementById('t-ph').value;
             const res = document.getElementById('t-res');
@@ -237,17 +236,25 @@
             db.collection("orders").where("phone", "==", ph).orderBy("time", "desc").limit(1).get().then(snap => {
                 res.classList.remove('hidden');
                 if(snap.empty) {
-                    res.innerHTML = "❌ Order not found!";
+                    res.innerHTML = "❌ Order not found! Please check number.";
                 } else {
                     snap.forEach(doc => {
                         const d = doc.data();
+                        let statusColor = d.status === 'Pending' ? 'text-orange-500' : 'text-green-600';
+                        
                         res.innerHTML = `
-                            <p><b>Order Status:</b> <span class="text-blue-600">${d.status}</span></p>
-                            <p><b>Price:</b> ₹${d.price}</p>
-                            <p><b>Reply:</b> ${d.reply || 'Checking your idea...'}</p>
+                            <div class="space-y-2">
+                                <p class="text-[10px] font-bold text-gray-400">ESTIMATED TIME: 24-48 HOURS</p>
+                                <p><b>Status:</b> <span class="${statusColor} font-black">${d.status.toUpperCase()}</span></p>
+                                <p><b>Price:</b> ₹${d.price}</p>
+                                <p class="bg-indigo-100 p-2 rounded"><b>Admin Reply:</b> ${d.reply || 'Hume aapka idea mil gaya hai, hum 24-48 hours mein kaam shuru kar denge.'}</p>
+                            </div>
                         `;
                     });
                 }
+            }).catch(e => {
+                alert("Error! Refresh and try again.");
+                console.log(e);
             });
         }
 
@@ -320,7 +327,6 @@
             }).then(() => alert("Saved!"));
         }
 
-        // WhatsApp trigger only on CONFIRM
         function updateStat(id, s, ph, name) {
             const reply = document.getElementById('r-'+id).value;
             db.collection("orders").doc(id).update({ status: s, reply: reply }).then(() => {
@@ -328,7 +334,6 @@
             });
         }
 
-        // WhatsApp trigger only on CANCEL
         function cancelOrder(id, ph) {
             db.collection("orders").doc(id).update({ status: 'Cancelled' }).then(() => {
                 window.open(`https://wa.me/91${ph}?text=Sorry! Your order has been cancelled by Saif Studio.`);
