@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
@@ -21,124 +21,111 @@
         .stat-card { background: white; border-radius: 1rem; padding: 1rem; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--p-color); }
         #thank-you-screen { display: none; position: fixed; inset: 0; background: white; z-index: 999; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .success-icon { font-size: 80px; animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body class="bg-slate-50 font-sans">
 
     <div id="thank-you-screen">
-        <div class="success-icon">✅</div>
+        <div class="text-6xl mb-4">✅</div>
         <h2 class="text-3xl font-black text-indigo-900 mt-4 text-center">ORDER RECEIVED!</h2>
-        <p class="text-gray-500 font-bold mt-2">Checking your details...</p>
-        <button onclick="document.getElementById('thank-you-screen').style.display='none'" class="mt-6 bg-primary text-white px-8 py-2 rounded-full font-bold">CLOSE</button>
+        <p class="text-gray-500 font-bold mt-2 text-center px-6">अब पेमेंट पूरा करने के लिए नीचे 'PAY NOW' बटन दबाएं।</p>
+        <button onclick="document.getElementById('thank-you-screen').style.display='none'; showSec('track')" class="mt-6 bg-primary text-white px-10 py-4 rounded-full font-bold shadow-xl active:scale-95 transition">PAY NOW</button>
     </div>
 
-    <div id="top-bar" class="bg-indigo-950 text-white text-center py-2 text-[11px] font-bold uppercase offer-glow sticky top-0 z-[100] transition-all">
+    <div id="top-bar" class="bg-indigo-950 text-white text-center py-2 text-[11px] font-bold uppercase offer-glow sticky top-0 z-[100]">
         🔥 <span id="header-offer-display">Loading Offer...</span> 🔥
     </div>
 
     <div id="user-view">
         <nav class="bg-primary p-4 text-white flex justify-between items-center shadow-lg">
             <div class="flex items-center gap-2 cursor-pointer" onclick="checkAdmin()">
-                <div class="w-8 h-8 bg-yellow-400 rounded flex items-center justify-center font-black text-indigo-900">S</div>
-                <h1 class="font-black italic text-sm">SAIF STUDIO</h1>
+                <div class="w-8 h-8 bg-yellow-400 rounded flex items-center justify-center font-black text-indigo-900 shadow-inner">S</div>
+                <h1 class="font-black italic text-sm tracking-tighter">SAIF STUDIO</h1>
             </div>
-            <div class="flex items-center gap-3">
-                <select id="lang-mod" onchange="changeLang()" class="bg-indigo-800 text-white text-[10px] rounded px-2 py-1 outline-none border border-indigo-400">
-                    <option value="hi">हिंदी (HI)</option>
-                    <option value="en">ENGLISH (EN)</option>
-                </select>
-                <div class="flex gap-3 text-[10px] font-bold uppercase">
-                    <button onclick="showSec('home')">Home</button>
-                    <button onclick="showSec('track')">Track</button>
-                </div>
+            <div class="flex gap-4 text-[10px] font-bold uppercase tracking-widest">
+                <button onclick="showSec('home')" class="hover:text-yellow-400">Order</button>
+                <button onclick="showSec('track')" class="hover:text-yellow-400">Payment</button>
             </div>
         </nav>
 
         <main class="max-w-4xl mx-auto p-4">
             <section id="sec-home" class="view-sec py-4">
                 <div class="text-center mb-6">
-                    <h2 id="main-hero" class="text-3xl font-black text-primary italic uppercase">अपनी पहचान बनाएं</h2>
+                    <h2 class="text-3xl font-black text-primary italic uppercase leading-none">अपनी पहचान बनाएं</h2>
                 </div>
                 <div class="bg-white p-6 rounded-[2rem] shadow-xl border-b-8 border-primary">
                     <div class="space-y-3">
-                        <select id="c-cat" onchange="updatePrice()" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold">
+                        <label class="text-[10px] font-bold text-gray-400 ml-2">CHOOSE LOGO TYPE</label>
+                        <select id="c-cat" onchange="updatePrice()" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold outline-none focus:ring-2 focus:ring-indigo-100">
                             <option value="simple">Simple Logo</option>
                             <option value="3d">3D Logo</option>
                             <option value="animation">Animation Logo</option>
                         </select>
-                        <div class="flex justify-between p-3 bg-indigo-50 rounded-xl border border-indigo-100">
-                            <span id="lbl-price" class="text-xs font-bold uppercase">Price:</span>
-                            <span id="price-tag" class="font-black text-primary">₹0</span>
+                        
+                        <div class="flex justify-between items-center p-4 bg-indigo-50 rounded-2xl border border-indigo-100">
+                            <span class="text-xs font-black uppercase text-indigo-400">Price:</span>
+                            <span id="price-tag" class="font-black text-primary text-2xl">₹0</span>
                         </div>
+
                         <div class="flex gap-2">
-                            <input type="text" id="cp-in" placeholder="Coupon Code" class="flex-1 p-3 bg-slate-50 border rounded-xl text-xs uppercase outline-none">
-                            <button onclick="applyCoupon()" class="bg-black text-white px-4 rounded-xl text-[10px] font-bold">APPLY</button>
+                            <input type="text" id="cp-in" placeholder="Coupon Code" class="flex-1 p-3 bg-slate-50 border rounded-xl text-xs uppercase outline-none focus:ring-2 focus:ring-indigo-200">
+                            <button onclick="applyCoupon()" class="bg-black text-white px-6 rounded-xl text-[10px] font-bold hover:bg-gray-800 transition shadow-md">APPLY</button>
                         </div>
-                        <input type="text" id="c-name" placeholder="Full Name" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
-                        <input type="tel" id="c-phone" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
-                        <textarea id="c-idea" placeholder="Logo idea..." class="w-full p-4 bg-slate-50 border rounded-2xl h-24 outline-none"></textarea>
-                        <button onclick="placeOrder()" id="btn-place" class="w-full bg-primary text-white font-black py-4 rounded-2xl shadow-lg transform active:scale-95 transition">PLACE ORDER</button>
+
+                        <div class="space-y-2 pt-2">
+                            <input type="text" id="c-name" placeholder="आपका पूरा नाम" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none focus:border-primary">
+                            <input type="tel" id="c-phone" placeholder="WhatsApp नंबर" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none focus:border-primary">
+                            <textarea id="c-idea" placeholder="लोगो का नाम या कोई आईडिया लिखें..." class="w-full p-4 bg-slate-50 border rounded-2xl h-24 outline-none focus:border-primary"></textarea>
+                        </div>
+
+                        <button onclick="placeOrder()" class="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-xl transform active:scale-95 transition-all text-lg">PLACE ORDER</button>
                     </div>
                 </div>
             </section>
             
             <section id="sec-track" class="view-sec hidden py-4">
-                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-8 border-primary">
-                    <h2 class="font-black mb-4 uppercase italic text-indigo-900">Track Your Order</h2>
-                    <input type="tel" id="t-ph" placeholder="Enter WhatsApp Number" class="w-full p-4 border rounded-2xl mb-4 outline-none focus:ring-2 focus:ring-indigo-300">
-                    <button onclick="trackOrder()" class="w-full bg-primary text-white py-4 rounded-2xl font-bold hover:bg-indigo-800 transition">CHECK STATUS</button>
-                    <div id="t-res" class="mt-6 p-5 bg-indigo-50 hidden rounded-2xl border-2 border-dashed border-indigo-200"></div>
+                <div class="bg-white p-6 rounded-3xl shadow-xl border-l-8 border-green-500 text-center">
+                    <h2 class="font-black mb-1 uppercase italic text-indigo-900 text-xl">Payment Gateway</h2>
+                    <p class="text-[10px] text-gray-400 mb-6 uppercase tracking-widest">Safe & Secure UPI Transaction</p>
+                    
+                    <div class="bg-slate-50 p-8 rounded-3xl border-2 border-dashed border-slate-200 mb-6 shadow-inner">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Payable Amount</p>
+                        <h3 id="pay-display-price" class="text-5xl font-black text-primary">₹0</h3>
+                    </div>
+
+                    <button onclick="payViaUPI()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-green-700 shadow-lg active:scale-95 transition-all">
+                        <img src="https://www.vectorlogo.zone/logos/upi/upi-icon.svg" class="w-8 h-8 bg-white rounded p-1">
+                        PAY VIA PHONEPE / G-PAY
+                    </button>
+                    
+                    <div class="mt-6 p-4 bg-yellow-50 rounded-2xl border border-yellow-100">
+                        <p class="text-[11px] text-yellow-700 font-bold leading-relaxed">
+                            ⚠️ पेमेंट करने के बाद उसका स्क्रीनशॉट व्हाट्सएप पर ज़रूर भेजें ताकि काम शुरू किया जा सके।
+                        </p>
+                    </div>
                 </div>
             </section>
-
-            <section id="sec-help" class="view-sec hidden py-4">
-                 <div class="bg-white p-6 rounded-3xl shadow-lg border-t-8 border-red-500">
-                    <h2 class="font-black text-red-600 mb-4">COMPLAINT / HELP</h2>
-                    <input type="text" id="comp-name" placeholder="Your Name" class="w-full p-4 border rounded-2xl mb-2">
-                    <textarea id="comp-text" placeholder="Write your complaint..." class="w-full p-4 border rounded-2xl h-24 mb-4"></textarea>
-                    <button onclick="sendComp()" class="w-full bg-red-600 text-white py-3 rounded-2xl font-bold">SUBMIT COMPLAINT</button>
-                 </div>
-            </section>
         </main>
-
-        <div class="fixed bottom-4 right-4 z-50">
-            <button onclick="showSec('help')" class="bg-red-600 text-white px-4 py-2 rounded-full shadow-2xl font-bold text-[10px]">COMPLAINT</button>
-        </div>
     </div>
 
     <div id="admin-view" class="hidden min-h-screen bg-slate-100 p-4">
         <div class="max-w-6xl mx-auto">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="font-black text-primary italic uppercase underline">Master Dashboard</h2>
-                <button onclick="location.reload()" class="bg-red-600 text-white px-4 py-1 rounded text-[10px] font-bold">EXIT</button>
+                <button onclick="location.reload()" class="bg-red-600 text-white px-4 py-1 rounded text-[10px] font-bold">LOGOUT</button>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div class="stat-card">
-                    <p class="text-[10px] font-bold text-gray-400">TOTAL ORDERS</p>
-                    <h3 id="stat-total" class="text-2xl font-black text-indigo-600">0</h3>
-                </div>
-                <div class="stat-card" style="border-top-color: #ef4444;">
-                    <p class="text-[10px] font-bold text-gray-400">PENDING</p>
-                    <h3 id="stat-pending" class="text-2xl font-black text-red-500">0</h3>
-                </div>
-                <div class="stat-card" style="border-top-color: #22c55e;">
-                    <p class="text-[10px] font-bold text-gray-400">REVENUE</p>
-                    <h3 id="stat-rev" class="text-2xl font-black text-green-600">₹0</h3>
-                </div>
-                <div class="stat-card" style="border-top-color: #f59e0b;">
-                    <p class="text-[10px] font-bold text-gray-400">COMPLAINTS</p>
-                    <h3 id="stat-comp" class="text-2xl font-black text-yellow-600">0</h3>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="stat-card"><p class="text-[10px] font-bold text-gray-400 uppercase">Total Orders</p><h3 id="stat-total" class="text-2xl font-black text-indigo-600">0</h3></div>
+                <div class="stat-card" style="border-top-color: #ef4444;"><p class="text-[10px] font-bold text-gray-400 uppercase">Pending</p><h3 id="stat-pending" class="text-2xl font-black text-red-500">0</h3></div>
+                <div class="stat-card" style="border-top-color: #22c55e;"><p class="text-[10px] font-bold text-gray-400 uppercase">Revenue (Done)</p><h3 id="stat-rev" class="text-2xl font-black text-green-600">₹0</h3></div>
             </div>
 
             <div class="bg-white p-5 rounded-2xl shadow-sm mb-6 border">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-2">
-                        <label class="text-[10px] font-bold">OFFER BAR TEXT:</label>
-                        <input type="text" id="set-offer-text" class="w-full p-2 border rounded text-xs" placeholder="Ex: First order 50% Off!">
+                        <label class="text-[10px] font-bold uppercase">Top Offer Text:</label>
+                        <input type="text" id="set-offer-text" class="w-full p-2 border rounded text-xs">
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div><label class="text-[8px]">Simple ₹</label><input type="number" id="set-p-simple" class="w-full p-2 border rounded text-xs"></div>
@@ -146,15 +133,17 @@
                         <div><label class="text-[8px]">Anim ₹</label><input type="number" id="set-p-anim" class="w-full p-2 border rounded text-xs"></div>
                     </div>
                 </div>
-                <button onclick="saveSettings()" class="w-full bg-black text-white py-2 rounded-xl text-xs font-bold mt-4">UPDATE WEBSITE</button>
+                <button onclick="saveSettings()" class="w-full bg-black text-white py-3 rounded-xl text-xs font-bold mt-4 shadow-lg">SAVE WEBSITE CHANGES</button>
             </div>
-
             <div id="admin-orders-list" class="space-y-4"></div>
-            <div id="admin-comp-list" class="mt-8 space-y-2"></div>
         </div>
     </div>
 
     <script>
+        // --- YOUR CONFIGURATION ---
+        const MY_UPI_ID = "7210065769@ibl"; 
+        const MERCHANT_NAME = "Saif Logo Studio";
+
         const firebaseConfig = {
             apiKey: "AIzaSyA-5oN6F82QqpoRPzJoMiVO3Ks1A88Xs10",
             authDomain: "saiflogostudio.firebaseapp.com",
@@ -163,85 +152,70 @@
             messagingSenderId: "763057407060",
             appId: "1:763057407060:web:c17918f45dea1076d299c1"
         };
+
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         let prices = { simple: 99, '3d': 199, animation: 499 };
         let finalPrice = 0;
+        let isDiscounted = false;
 
         function updatePrice() {
-            finalPrice = prices[document.getElementById('c-cat').value];
+            const cat = document.getElementById('c-cat').value;
+            if(!isDiscounted) {
+                finalPrice = prices[cat];
+            }
             document.getElementById('price-tag').innerText = "₹" + finalPrice;
+            document.getElementById('pay-display-price').innerText = "₹" + finalPrice;
         }
 
         function applyCoupon() {
             const code = document.getElementById('cp-in').value.toUpperCase();
-            if(code === "SAIF50") {
-                finalPrice = Math.floor(finalPrice * 0.5);
-                document.getElementById('price-tag').innerText = "₹" + finalPrice + " (OFFER!)";
-                alert("Coupon Applied!");
-            } else { alert("Wrong Coupon"); }
+            const cat = document.getElementById('c-cat').value;
+            let basePrice = prices[cat];
+
+            if(code === "WElCOME24") {
+                finalPrice = Math.floor(basePrice * 0.5);
+                isDiscounted = true;
+                alert("50% Discount Applied! New Price: ₹" + finalPrice);
+            } else if(code === "WELCOME10") {
+                finalPrice = Math.floor(basePrice * 0.9);
+                isDiscounted = true;
+                alert("10% Discount Applied!");
+            } else {
+                alert("Wrong Code or Already Reset!");
+                isDiscounted = false;
+                finalPrice = basePrice;
+            }
+            updatePrice();
+        }
+
+        function payViaUPI() {
+            if(finalPrice <= 0) return alert("Pehle Logo Select Karein!");
+            const name = document.getElementById('c-name').value || "Guest";
+            const upiUrl = `upi://pay?pa=${MY_UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${finalPrice}&cu=INR&tn=OrderFor-${name}`;
+            window.location.href = upiUrl;
         }
 
         function placeOrder() {
             const n = document.getElementById('c-name').value;
             const ph = document.getElementById('c-phone').value;
-            const id = document.getElementById('c-idea').value;
-            const ct = document.getElementById('c-cat').value;
-            if(!n || !ph) return alert("Details bharo!");
+            if(!n || !ph) return alert("नाम और व्हाट्सएप नंबर भरें!");
 
-            db.collection("orders").add({ name: n, phone: ph, idea: id, category: ct, price: finalPrice, status: 'Pending', time: new Date() })
-            .then(() => {
+            db.collection("orders").add({
+                name: n, phone: ph, idea: document.getElementById('c-idea').value,
+                category: document.getElementById('c-cat').value,
+                price: finalPrice, status: 'Pending', time: new Date()
+            }).then(() => {
                 confetti();
                 document.getElementById('thank-you-screen').style.display = 'flex';
-            });
-        }
-
-        // --- TRACKING SYSTEM UPDATED ---
-        function trackOrder() {
-            const ph = document.getElementById('t-ph').value;
-            const res = document.getElementById('t-res');
-            if(!ph) return alert("WhatsApp Number dalo!");
-
-            res.innerHTML = "<p class='text-center text-indigo-600 font-bold'>Searching...</p>";
-            res.classList.remove('hidden');
-
-            db.collection("orders").where("phone", "==", ph).orderBy("time", "desc").limit(1).get().then(snap => {
-                if(snap.empty) {
-                    res.innerHTML = "❌ Order nahi mila! Sahi number check karein.";
-                } else {
-                    snap.forEach(doc => {
-                        const d = doc.data();
-                        let statusColor = d.status === 'Pending' ? 'text-orange-500' : 'text-green-600';
-                        if(d.status === 'Cancelled') statusColor = 'text-red-500';
-                        
-                        res.innerHTML = `
-                            <div class="space-y-3">
-                                <div class="bg-indigo-600 text-white text-[10px] py-1 px-3 rounded-full inline-block font-bold">
-                                    ESTIMATED: 24-48 HOURS
-                                </div>
-                                <p class="text-lg"><b>Status:</b> <span class="${statusColor} font-black uppercase">${d.status}</span></p>
-                                <div class="h-[1px] bg-indigo-100 my-2"></div>
-                                <p class="text-sm"><b>Customer:</b> ${d.name}</p>
-                                <p class="text-sm"><b>Category:</b> ${d.category}</p>
-                                <p class="text-sm"><b>Price:</b> ₹${d.price}</p>
-                                <div class="mt-4 p-3 bg-white rounded-xl border border-indigo-100 shadow-inner">
-                                    <p class="text-[10px] font-bold text-indigo-400 uppercase">Admin Notification:</p>
-                                    <p class="text-sm italic text-gray-700">"${d.reply || 'Hume aapka order mil gaya hai. Aapka kaam jaldi se jaldi 24-48 ghanton mein ho jayega.'}"</p>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-            }).catch(e => {
-                res.innerHTML = "❌ Connection Error! Dubara try karein.";
-                console.error(e);
             });
         }
 
         function showSec(id) {
             document.querySelectorAll('.view-sec').forEach(s => s.classList.add('hidden'));
             document.getElementById('sec-' + id).classList.remove('hidden');
+            window.scrollTo(0,0);
         }
 
         function checkAdmin() {
@@ -259,19 +233,15 @@
                 list.innerHTML = "";
                 snap.forEach(doc => {
                     const d = doc.data();
-                    const oid = doc.id;
                     if(d.status === 'Pending') pending++;
                     if(d.status === 'Done') revenue += Number(d.price);
-
                     list.innerHTML += `
                         <div class="bg-white p-4 rounded-xl border-l-4 ${d.status==='Pending'?'border-red-500':'border-green-500'} shadow-sm">
                             <p class="font-black text-sm">${d.name} (${d.category})</p>
-                            <p class="text-[10px] text-gray-400">₹${d.price} - ${d.idea}</p>
+                            <p class="text-[10px] text-gray-500">₹${d.price} | Ph: ${d.phone} | Idea: ${d.idea || 'N/A'}</p>
                             <div class="mt-2 flex gap-2">
-                                <input id="r-${oid}" class="flex-1 p-1 border text-[10px]" placeholder="Reply (Ex: Working on it...)" value="${d.reply || ''}">
-                                <button onclick="updateStat('${oid}','Done', '${d.phone}', '${d.name}')" class="bg-green-600 text-white px-2 py-1 rounded text-[10px]">DONE</button>
-                                <button onclick="cancelOrder('${oid}','${d.phone}')" class="bg-red-500 text-white px-2 py-1 rounded text-[10px]">CANCEL</button>
-                                <button onclick="delDoc('orders','${oid}')" class="text-gray-300">✕</button>
+                                <button onclick="updateStat('${doc.id}','Done')" class="bg-green-600 text-white px-3 py-1 rounded text-[10px] font-bold">DONE</button>
+                                <button onclick="delDoc('orders','${doc.id}')" class="text-red-400 text-[10px] font-bold border border-red-100 px-2 rounded">DELETE</button>
                             </div>
                         </div>`;
                 });
@@ -281,20 +251,8 @@
             });
         }
 
-        function updateStat(id, s, ph, name) {
-            const reply = document.getElementById('r-'+id).value;
-            db.collection("orders").doc(id).update({ status: s, reply: reply }).then(() => {
-                alert("Status Updated!");
-            });
-        }
-
-        function cancelOrder(id, ph) {
-            db.collection("orders").doc(id).update({ status: 'Cancelled' }).then(() => {
-                alert("Order Cancelled!");
-            });
-        }
-
-        function delDoc(col, id) { if(confirm("Delete?")) db.collection(col).doc(id).delete(); }
+        function updateStat(id, s) { db.collection("orders").doc(id).update({ status: s }).then(() => alert("Marked Done!")); }
+        function delDoc(col, id) { if(confirm("Order मिटा दें?")) db.collection(col).doc(id).delete(); }
 
         db.collection("settings").doc("main").onSnapshot(doc => {
             if(doc.exists) {
@@ -312,8 +270,8 @@
             const a = document.getElementById('set-p-anim').value;
             db.collection("settings").doc("main").set({
                 offerText: offer, simple: Number(s), '3d': Number(t), animation: Number(a)
-            }).then(() => alert("Settings Updated!"));
+            }).then(() => alert("दुकान अपडेट हो गई!"));
         }
     </script>
 </body>
-</html>          
+</html>
