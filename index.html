@@ -14,6 +14,15 @@
         .text-primary { color: var(--p-color); }
         .offer-glow { animation: pulse-gold 2s infinite; border-bottom: 2px solid #ffd700; }
         @keyframes pulse-gold { 0%, 100% { background-color: #1e1b4b; } 50% { background-color: #312e81; } }
+        
+        /* Success Animation */
+        .check-anim { animation: zoomInBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes zoomInBounce {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         #side-menu { position: fixed; top: 0; left: -100%; width: 80%; height: 100%; background: white; z-index: 1000; transition: 0.4s; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
         #side-menu.open { left: 0; }
         .menu-item { padding: 1.2rem; border-bottom: 1px solid #f1f5f9; font-weight: bold; color: #1e1b4b; display: flex; align-items: center; gap: 10px; cursor: pointer; }
@@ -35,9 +44,8 @@
         </div>
         <div class="flex flex-col">
             <div onclick="showSec('home')" class="menu-item">🏠 <span class="lang-txt" data-en="Home" data-hi="होम पेज">होम पेज</span></div>
-            <div onclick="showSec('track')" class="menu-item">🔍 <span class="lang-txt" data-en="Track Order" data-hi="आर्डर ट्रैक करें">आर्डर ट्रैक करें</span></div>
             <div onclick="showSec('about')" class="menu-item">ℹ️ <span class="lang-txt" data-en="About Us" data-hi="हमारे बारे में">हमारे बारे में</span></div>
-            <div onclick="window.location.href='tel:+918796914489'" class="menu-item text-green-600">📞 <span class="lang-txt" data-en="Help: 8796914489" data-hi="मदद: 8796914489">मदद: 8796914489</span></div>
+            <div onclick="window.location.href='tel:+918796914489'" class="menu-item text-green-600">📞 <span class="lang-txt" data-en="Help" data-hi="मदद">मदद</span></div>
             <div onclick="toggleLanguage()" class="menu-item text-orange-500">🌐 <span id="lang-btn-txt">English Mode</span></div>
         </div>
     </div>
@@ -58,20 +66,13 @@
                     <div class="space-y-3">
                         <select id="c-cat" onchange="updatePrice()" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold outline-none">
                             <option value="simple">Simple Logo (₹99)</option>
-                            <option value="3d">3D Logo (₹299)</option>
-                            <option value="animation">Animation (₹599)</option>
+                            <option value="3d">3D Logo (₹199)</option>
+                            <option value="animation">Animation (₹499)</option>
                         </select>
-                        
-                        <!-- FIXED APPLY BUTTON SECTION -->
                         <div class="flex flex-nowrap gap-2">
-                            <input type="text" id="coupon-code" placeholder="Coupon" 
-                                   class="w-2/3 p-4 bg-slate-50 border rounded-2xl outline-none font-bold text-sm">
-                            <button onclick="applyCoupon()" 
-                                    class="w-1/3 bg-yellow-400 text-indigo-900 px-2 rounded-2xl font-black text-[11px] uppercase shadow-md active:scale-95 transition-transform">
-                                <span class="lang-txt" data-en="Apply" data-hi="लगायें">लगायें</span>
-                            </button>
+                            <input type="text" id="coupon-code" placeholder="Coupon" class="w-2/3 p-4 bg-slate-50 border rounded-2xl outline-none font-bold text-sm">
+                            <button onclick="applyCoupon()" class="w-1/3 bg-yellow-400 text-indigo-900 px-2 rounded-2xl font-black text-[11px] uppercase shadow-md active:scale-95 transition-transform lang-txt" data-en="Apply" data-hi="लगायें">लगायें</button>
                         </div>
-
                         <div class="p-4 bg-indigo-50 rounded-2xl text-center border-2 border-dashed border-indigo-200">
                             <span id="price-tag" class="font-black text-primary text-3xl">₹99</span>
                         </div>
@@ -83,50 +84,56 @@
                 </div>
             </section>
 
-            <!-- TRACK -->
+            <!-- TAGDA SUCCESS & PAYMENT SCREEN -->
             <section id="sec-track" class="view-sec hidden py-4">
-                <div class="bg-white p-5 rounded-2xl shadow-lg border-t-4 border-indigo-500">
-                    <div class="flex gap-2 mb-4">
-                        <input type="tel" id="tr-num" placeholder="WhatsApp Number" class="flex-1 p-3 border rounded-xl outline-none bg-slate-50">
-                        <button onclick="trackMyOrder()" class="bg-indigo-600 text-white px-6 rounded-xl font-bold uppercase text-xs lang-txt" data-en="Track" data-hi="ट्रैक करें">ट्रैक करें</button>
-                    </div>
-                    <div id="track-box" class="hidden p-4 rounded-xl bg-white border-2 border-indigo-100 text-center">
-                        <div id="st-val" class="inline-block bg-indigo-900 text-white px-4 py-1 rounded-full text-xs font-bold mb-4 italic uppercase">Pending</div>
-                        <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200 mb-4">
-                            <p class="text-[10px] text-yellow-700 font-black uppercase mb-1 lang-txt" data-en="Admin Message:" data-hi="एडमिन का मैसेज:">एडमिन का मैसेज:</p>
-                            <p id="st-reply" class="text-indigo-900 font-bold italic">Processing...</p>
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl text-center border-t-8 border-green-500 overflow-hidden relative">
+                    <div class="check-anim inline-block bg-green-100 text-green-600 w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-4 mx-auto">✓</div>
+                    
+                    <h3 class="text-3xl font-black text-indigo-900 mb-2 lang-txt" data-en="Thank You!" data-hi="धन्यवाद!">धन्यवाद!</h3>
+                    <p class="text-slate-500 font-bold mb-6 lang-txt" data-en="Order received. Please wait for our confirmation." data-hi="आर्डर मिल गया है। कृपया कन्फर्मेशन का इंतज़ार करें।">आर्डर मिल गया है। कृपया कन्फर्मेशन का इंतज़ार करें।</p>
+                    
+                    <div class="bg-slate-50 p-6 rounded-3xl border-2 border-dashed border-slate-200">
+                        <p class="text-xs font-black text-slate-400 uppercase mb-4 tracking-widest">Pay Now to Start Work</p>
+                        <div class="grid grid-cols-1 gap-3">
+                            <!-- Replace 'saif@upi' with your real UPI ID -->
+                            <a href="upi://pay?pa=saif@upi&pn=SaifStudio&am=99" class="bg-white border-2 border-blue-500 text-blue-600 font-black py-4 rounded-2xl flex items-center justify-center gap-3 shadow-sm active:scale-95 transition-transform">
+                                <img src="https://www.vectorlogo.zone/logos/google_pay/google_pay-icon.svg" class="w-6"> Google Pay
+                            </a>
+                            <a href="upi://pay?pa=saif@upi&pn=SaifStudio&am=99" class="bg-white border-2 border-purple-500 text-purple-600 font-black py-4 rounded-2xl flex items-center justify-center gap-3 shadow-sm active:scale-95 transition-transform">
+                                <img src="https://www.vectorlogo.zone/logos/phonepe/phonepe-icon.svg" class="w-6"> PhonePe
+                            </a>
                         </div>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase">Amount to Pay</p>
-                        <h3 id="pay-final-amt" class="text-4xl font-black text-indigo-950 mb-4">₹0</h3>
-                        <button onclick="payViaUPI()" class="w-full bg-green-600 text-white py-4 rounded-xl font-black shadow-lg uppercase lang-txt" data-en="Pay with UPI ID" data-hi="UPI द्वारा भुगतान करें">UPI द्वारा भुगतान करें</button>
+                        <p class="text-[10px] mt-4 text-slate-400">Payment karne ke baad screenshot WhatsApp par bhejein.</p>
                     </div>
                 </div>
             </section>
 
             <!-- ABOUT -->
             <section id="sec-about" class="view-sec hidden py-4">
-                <div class="bg-white p-8 rounded-3xl shadow-xl text-center space-y-4 border-b-8 border-yellow-400">
-                    <h2 class="text-2xl font-black text-indigo-900">SAIF LOGO STUDIO</h2>
-                    <div class="text-sm font-bold text-gray-600 space-y-2">
-                        <p>📍 Location: Delhi, India</p>
-                        <p>✅ Trusted by 5000+ Happy Customers</p>
-                        <p>📞 Phone: 8796914489</p>
-                    </div>
+                <div class="bg-white p-8 rounded-3xl shadow-xl text-center space-y-4">
+                    <h2 class="text-2xl font-black text-indigo-900">SAIF STUDIO</h2>
+                    <p class="lang-txt" data-en="Delhi, India | Trusted Service" data-hi="दिल्ली, भारत | भरोसेमंद सेवा">दिल्ली, भारत | भरोसेमंद सेवा</p>
                 </div>
             </section>
 
-            <!-- ADMIN -->
+            <!-- ADMIN PANEL -->
             <section id="sec-admin" class="view-sec hidden py-4 space-y-4">
+                <div class="bg-indigo-950 p-5 rounded-2xl shadow-lg border-l-8 border-yellow-400">
+                    <h4 class="text-white font-black text-xs uppercase mb-3 tracking-widest">Header Offer Control</h4>
+                    <div class="flex gap-2">
+                        <input type="text" id="new-header-txt" placeholder="New offer text..." class="flex-1 p-3 rounded-xl text-sm outline-none font-bold">
+                        <button onclick="updateHeaderMsg()" class="bg-yellow-400 text-indigo-900 px-4 rounded-xl font-black text-xs uppercase">Update</button>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-indigo-900 p-4 rounded-2xl text-white">
-                        <p class="text-[10px] font-bold opacity-70 uppercase">Total Revenue</p>
+                        <p class="text-[10px] font-bold opacity-70">REVENUE</p>
                         <h4 id="adm-rev" class="text-2xl font-black">₹0</h4>
                     </div>
-                    <div class="bg-white p-4 rounded-2xl border shadow-sm text-center">
-                        <div class="flex justify-around">
-                            <div><p class="text-[10px]">Total</p><h5 id="adm-total" class="font-black text-indigo-900">0</h5></div>
-                            <div><p class="text-[10px] text-red-500">Pending</p><h5 id="adm-pend" class="font-black text-red-500">0</h5></div>
-                        </div>
+                    <div class="bg-white p-4 rounded-2xl border text-center">
+                        <p class="text-[10px] font-bold">TOTAL ORDERS</p>
+                        <h5 id="adm-total" class="text-2xl font-black text-indigo-900">0</h5>
                     </div>
                 </div>
                 <div id="admin-orders-list" class="space-y-4"></div>
@@ -135,8 +142,7 @@
     </div>
 
     <script>
-        const MY_COUPONS = { "SAIF10": 10, "OFF50": 50, "WELCOME20": 20 };
-
+        const MY_COUPONS = { "SAIF10": 10, "OFF50": 50 };
         const firebaseConfig = {
             apiKey: "AIzaSyA-5oN6F82QqpoRPzJoMiVO3Ks1A88Xs10",
             authDomain: "saiflogostudio.firebaseapp.com",
@@ -148,15 +154,31 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let basePrices = { simple: 99, '3d': 299, animation: 599 };
+        let basePrices = { simple: 99, '3d': 199, animation: 499 };
         let currentPrice = 99;
         let appliedDiscount = 0;
         let currentLang = 'hi';
 
         db.collection("settings").doc("offer").onSnapshot(doc => {
             if(doc.exists) document.getElementById('header-text').innerText = doc.data().text;
-            else document.getElementById('header-text').innerText = "Delhi's No. 1 Creative Choice";
         });
+
+        function toggleLanguage() {
+            currentLang = (currentLang === 'hi') ? 'en' : 'hi';
+            document.querySelectorAll('.lang-txt').forEach(el => {
+                el.innerText = el.getAttribute('data-' + currentLang);
+            });
+            document.getElementById('lang-btn-txt').innerText = (currentLang === 'hi') ? 'English Mode' : 'हिंदी मोड';
+        }
+
+        function updateHeaderMsg() {
+            const val = document.getElementById('new-header-txt').value;
+            if(!val) return alert("Text likhen!");
+            db.collection("settings").doc("offer").set({ text: val }).then(() => {
+                alert("Header Updated!");
+                document.getElementById('new-header-txt').value = "";
+            });
+        }
 
         function toggleMenu() {
             document.getElementById('side-menu').classList.toggle('open');
@@ -170,14 +192,6 @@
             if(!document.getElementById('menu-bg').classList.contains('hidden')) toggleMenu();
         }
 
-        function toggleLanguage() {
-            currentLang = (currentLang === 'hi') ? 'en' : 'hi';
-            document.querySelectorAll('.lang-txt').forEach(el => {
-                el.innerText = el.getAttribute('data-' + currentLang);
-            });
-            document.getElementById('lang-btn-txt').innerText = (currentLang === 'hi') ? 'English Mode' : 'हिंदी मोड';
-        }
-
         function updatePrice() {
             const cat = document.getElementById('c-cat').value;
             currentPrice = basePrices[cat] - appliedDiscount;
@@ -189,96 +203,57 @@
             if(MY_COUPONS[code]) {
                 appliedDiscount = MY_COUPONS[code];
                 updatePrice();
-                alert("Coupon Applied! ₹" + appliedDiscount + " discount mil gaya.");
-            } else {
-                alert("Invalid Coupon Code!");
-                appliedDiscount = 0;
-                updatePrice();
+                alert("Coupon Applied!");
             }
         }
 
         function placeOrder() {
             const n = document.getElementById('c-name').value;
             const ph = document.getElementById('c-phone').value;
-            if(!n || !ph) return alert("Please fill Name and Number");
+            if(!n || !ph) return alert("Details bhariye!");
             
-            const orderData = {
+            db.collection("orders").add({
                 name: n, phone: ph, idea: document.getElementById('c-idea').value,
                 category: document.getElementById('c-cat').value,
-                price: currentPrice, status: 'Pending', time: new Date(),
-                adminReply: 'Checking...'
-            };
-
-            db.collection("orders").add(orderData).then(() => { 
+                price: currentPrice, status: 'Pending', time: new Date()
+            }).then(() => { 
                 confetti(); 
                 showSec('track'); 
-                document.getElementById('tr-num').value = ph;
-                const msg = `Hello Saif Studio, New Order from ${n}! Category: ${orderData.category}, Price: ₹${currentPrice}.`;
-                window.open(`https://wa.me/918796914489?text=${encodeURIComponent(msg)}`);
             });
-        }
-
-        function trackMyOrder() {
-            const ph = document.getElementById('tr-num').value;
-            db.collection("orders").where("phone", "==", ph).orderBy("time", "desc").limit(1).get().then(snap => {
-                if(snap.empty) return alert("No Order Found!");
-                const d = snap.docs[0].data();
-                document.getElementById('track-box').classList.remove('hidden');
-                document.getElementById('st-val').innerText = d.status;
-                document.getElementById('st-reply').innerText = d.adminReply;
-                document.getElementById('pay-final-amt').innerText = "₹" + d.price;
-            });
-        }
-
-        function payViaUPI() {
-            const amt = document.getElementById('pay-final-amt').innerText.replace('₹','');
-            window.location.href = `upi://pay?pa=7210065769@ibl&pn=SaifStudio&am=${amt}&cu=INR`;
         }
 
         function loadAdminData() {
             db.collection("orders").orderBy("time", "desc").onSnapshot(snap => {
-                let rev = 0; let pend = 0;
-                const list = document.getElementById('admin-orders-list');
-                list.innerHTML = "";
-                document.getElementById('adm-total').innerText = snap.size;
+                let rev = 0; const list = document.getElementById('admin-orders-list');
+                list.innerHTML = ""; document.getElementById('adm-total').innerText = snap.size;
                 snap.forEach(doc => {
-                    const d = doc.data();
-                    if(d.status === "Paid") rev += Number(d.price);
-                    if(d.status === "Pending") pend++;
+                    const d = doc.data(); if(d.status === "Confirmed") rev += Number(d.price);
                     list.innerHTML += `
-                        <div class="bg-white p-4 rounded-xl border mb-3">
-                            <div class="flex justify-between font-bold text-xs uppercase mb-2">
+                        <div class="bg-white p-4 rounded-xl border mb-3 relative">
+                            <button onclick="deleteOrder('${doc.id}')" class="absolute top-2 right-2 text-red-500 font-bold text-xl px-2">×</button>
+                            <div class="flex justify-between font-bold text-xs mb-2 pr-6">
                                 <span>${d.name} (${d.phone}) - ₹${d.price}</span>
-                                <div class="flex gap-2">
-                                    <button onclick="updateStatus('${doc.id}', '${d.phone}', 'Confirmed')" class="text-green-600">CONFIRM</button>
-                                    <button onclick="updateStatus('${doc.id}', '${d.phone}', 'Cancelled')" class="text-red-500">CANCEL</button>
-                                </div>
                             </div>
                             <div class="flex gap-2">
-                                <input type="text" id="rep-${doc.id}" placeholder="Reply..." class="flex-1 p-2 bg-slate-50 border rounded text-xs outline-none">
-                                <button onclick="sendReply('${doc.id}', '${d.phone}')" class="bg-indigo-600 text-white px-3 rounded text-[10px] font-bold">SEND MSG</button>
+                                <button onclick="updateStatus('${doc.id}', '${d.phone}', 'Confirmed')" class="text-green-600 bg-green-50 px-3 py-1 rounded text-[10px] font-bold">CONFIRM</button>
+                                <button onclick="updateStatus('${doc.id}', '${d.phone}', 'Cancelled')" class="text-red-500 bg-red-50 px-3 py-1 rounded text-[10px] font-bold">CANCEL</button>
                             </div>
                         </div>`;
                 });
                 document.getElementById('adm-rev').innerText = "₹" + rev;
-                document.getElementById('adm-pend').innerText = pend;
             });
+        }
+
+        function deleteOrder(id) {
+            if(confirm("Order delete karein?")) {
+                db.collection("orders").doc(id).delete().then(() => alert("Deleted!"));
+            }
         }
 
         function updateStatus(id, phone, status) {
             db.collection("orders").doc(id).update({ status: status }).then(() => {
-                alert("Status Updated!");
-                const msg = `Hi, your order at Saif Studio has been ${status}. Check app for details.`;
+                const msg = `Hi, your order at Saif Studio has been ${status}.`;
                 window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
-            });
-        }
-
-        function sendReply(id, phone) {
-            const msgText = document.getElementById('rep-' + id).value;
-            if(!msgText) return alert("Message Likhen!");
-            db.collection("orders").doc(id).update({ adminReply: msgText, status: 'Replied' }).then(() => {
-                alert("Reply Sent!");
-                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msgText)}`);
             });
         }
 
