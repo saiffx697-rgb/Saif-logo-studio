@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saif Logo Studio | Delhi's No. 1</title>
+    <title>Saif Studio | Premium Designs</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -11,138 +11,173 @@
     <style>
         :root { --p-color: #312e81; }
         .bg-primary { background-color: var(--p-color); }
-        .text-primary { color: var(--p-color); }
-        .offer-glow { animation: pulse-gold 2s infinite; border-bottom: 2px solid #ffd700; }
-        @keyframes pulse-gold { 0%, 100% { background-color: #1e1b4b; } 50% { background-color: #312e81; } }
-        
-        /* Success Animation */
-        .check-anim { animation: zoomInBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes zoomInBounce {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        #side-menu { position: fixed; top: 0; left: -100%; width: 80%; height: 100%; background: white; z-index: 1000; transition: 0.4s; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+        .view-sec { display: none; }
+        .view-sec.active { display: block; }
+        #welcome-overlay { position: fixed; inset: 0; background: var(--p-color); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.5s; }
+        #side-menu { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: white; z-index: 1001; transition: 0.4s; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
         #side-menu.open { left: 0; }
-        .menu-item { padding: 1.2rem; border-bottom: 1px solid #f1f5f9; font-weight: bold; color: #1e1b4b; display: flex; align-items: center; gap: 10px; cursor: pointer; }
     </style>
 </head>
 <body class="bg-slate-50 font-sans">
 
+    <!-- 1. WELCOME SCREEN -->
+    <div id="welcome-overlay">
+        <div class="text-center text-white">
+            <h1 class="text-4xl font-black italic animate-bounce">WELCOME</h1>
+            <p class="text-yellow-400 font-bold tracking-widest">SAIF STUDIO</p>
+        </div>
+    </div>
+
     <!-- TOP BAR -->
-    <div id="hydra-bar" class="bg-indigo-950 text-white text-center py-2 text-[11px] font-bold uppercase offer-glow">
-        🔥 <span id="header-text">Loading Latest Offer...</span> 🔥
+    <div class="bg-indigo-950 text-white text-center py-2 text-[10px] font-bold uppercase tracking-widest">
+        🔥 <span id="header-text">Saif Studio: No. 1 Logo Designer in Delhi</span> 🔥
     </div>
 
     <!-- SIDE MENU -->
-    <div id="menu-bg" onclick="toggleMenu()" class="fixed inset-0 bg-black/50 z-[999] hidden"></div>
+    <div id="menu-bg" onclick="toggleMenu()" class="fixed inset-0 bg-black/50 z-[1000] hidden"></div>
     <div id="side-menu">
         <div class="bg-primary p-8 text-white">
-            <div class="w-16 h-16 rounded-full border-4 border-yellow-400 mb-2 bg-white flex items-center justify-center text-indigo-900 font-bold text-2xl">S</div>
-            <p class="font-black text-lg">Saif Studio</p>
+            <div class="w-12 h-12 rounded-full border-2 border-yellow-400 mb-2 flex items-center justify-center font-bold">S</div>
+            <p class="font-black">Saif Studio</p>
         </div>
-        <div class="flex flex-col">
-            <div onclick="showSec('home')" class="menu-item">🏠 <span class="lang-txt" data-en="Home" data-hi="होम पेज">होम पेज</span></div>
-            <div onclick="showSec('about')" class="menu-item">ℹ️ <span class="lang-txt" data-en="About Us" data-hi="हमारे बारे में">हमारे बारे में</span></div>
-            <div onclick="window.location.href='tel:+918796914489'" class="menu-item text-green-600">📞 <span class="lang-txt" data-en="Help" data-hi="मदद">मदद</span></div>
-            <div onclick="toggleLanguage()" class="menu-item text-orange-500">🌐 <span id="lang-btn-txt">English Mode</span></div>
+        <div class="flex flex-col p-2">
+            <button onclick="showSec('home')" class="text-left p-4 font-bold border-b">🏠 Home</button>
+            <button onclick="showSec('pay-screen')" class="text-left p-4 font-bold border-b text-blue-600">💸 Pay Pending</button>
+            <button onclick="showSec('about')" class="text-left p-4 font-bold border-b">ℹ️ About & Contact</button>
+            <button onclick="showSec('complain')" class="text-left p-4 font-bold text-orange-600">⚠️ Register Complaint</button>
         </div>
     </div>
 
-    <div id="app-view">
-        <div class="bg-primary p-4 text-white flex justify-between items-center sticky top-0 z-[100]">
-            <button onclick="toggleMenu()" class="text-2xl">☰</button>
-            <h1 class="font-black italic text-sm tracking-tighter" onclick="checkAdmin()">SAIF STUDIO</h1>
-            <div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center font-black text-indigo-900">S</div>
-        </div>
+    <!-- NAV BAR -->
+    <nav class="bg-primary p-4 text-white flex justify-between items-center sticky top-0 z-[100]">
+        <button onclick="toggleMenu()" class="text-2xl">☰</button>
+        <h1 class="font-black italic tracking-tighter">SAIF STUDIO</h1>
+        <div id="secret-admin-trigger" onclick="adminTap()" class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-indigo-900 font-bold cursor-pointer">S</div>
+    </nav>
 
-        <main class="max-w-4xl mx-auto p-4 space-y-6">
-            
-            <!-- HOME -->
-            <section id="sec-home" class="view-sec py-4">
-                <div class="bg-white p-6 rounded-[2rem] shadow-xl border-b-8 border-primary">
-                    <h2 class="text-xl font-black text-primary mb-4 uppercase lang-txt" data-en="Place Your Order" data-hi="अपना लोगो आर्डर करें">अपना लोगो आर्डर करें</h2>
-                    <div class="space-y-3">
-                        <select id="c-cat" onchange="updatePrice()" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold outline-none">
-                            <option value="simple">Simple Logo (₹99)</option>
-                            <option value="3d">3D Logo (₹199)</option>
-                            <option value="animation">Animation (₹499)</option>
-                        </select>
-                        <div class="flex flex-nowrap gap-2">
-                            <input type="text" id="coupon-code" placeholder="Coupon" class="w-2/3 p-4 bg-slate-50 border rounded-2xl outline-none font-bold text-sm">
-                            <button onclick="applyCoupon()" class="w-1/3 bg-yellow-400 text-indigo-900 px-2 rounded-2xl font-black text-[11px] uppercase shadow-md active:scale-95 transition-transform lang-txt" data-en="Apply" data-hi="लगायें">लगायें</button>
-                        </div>
-                        <div class="p-4 bg-indigo-50 rounded-2xl text-center border-2 border-dashed border-indigo-200">
-                            <span id="price-tag" class="font-black text-primary text-3xl">₹99</span>
-                        </div>
-                        <input type="text" id="c-name" placeholder="Full Name" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
-                        <input type="tel" id="c-phone" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
-                        <textarea id="c-idea" placeholder="Logo Idea..." class="w-full p-4 bg-slate-50 border rounded-2xl h-24 outline-none"></textarea>
-                        <button onclick="placeOrder()" class="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-xl text-lg uppercase lang-txt" data-en="Submit Order" data-hi="आर्डर भेजें">आर्डर भेजें</button>
-                    </div>
-                </div>
-            </section>
+    <main class="max-w-4xl mx-auto p-4">
+        
+        <!-- HOME / ORDER FORM -->
+        <section id="sec-home" class="view-sec active py-4">
+            <div class="bg-white p-6 rounded-[2rem] shadow-xl border-b-8 border-primary mb-6">
+                <h2 class="text-xl font-black text-indigo-900 mb-4 uppercase">Order Your Logo</h2>
+                <div class="space-y-4">
+                    <select id="c-cat" onchange="updatePrice()" class="w-full p-4 bg-slate-100 rounded-2xl font-bold outline-none border">
+                        <option value="99">Simple Logo (₹99)</option>
+                        <option value="199">3D Logo (₹299)</option>
+                        <option value="499">Animation (₹599)</option>
+                    </select>
 
-            <!-- TAGDA SUCCESS & PAYMENT SCREEN -->
-            <section id="sec-track" class="view-sec hidden py-4">
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl text-center border-t-8 border-green-500 overflow-hidden relative">
-                    <div class="check-anim inline-block bg-green-100 text-green-600 w-24 h-24 rounded-full flex items-center justify-center text-5xl mb-4 mx-auto">✓</div>
-                    
-                    <h3 class="text-3xl font-black text-indigo-900 mb-2 lang-txt" data-en="Thank You!" data-hi="धन्यवाद!">धन्यवाद!</h3>
-                    <p class="text-slate-500 font-bold mb-6 lang-txt" data-en="Order received. Please wait for our confirmation." data-hi="आर्डर मिल गया है। कृपया कन्फर्मेशन का इंतज़ार करें।">आर्डर मिल गया है। कृपया कन्फर्मेशन का इंतज़ार करें।</p>
-                    
-                    <div class="bg-slate-50 p-6 rounded-3xl border-2 border-dashed border-slate-200">
-                        <p class="text-xs font-black text-slate-400 uppercase mb-4 tracking-widest">Pay Now to Start Work</p>
-                        <div class="grid grid-cols-1 gap-3">
-                            <!-- Replace 'saif@upi' with your real UPI ID -->
-                            <a href="upi://pay?pa=saif@upi&pn=SaifStudio&am=99" class="bg-white border-2 border-blue-500 text-blue-600 font-black py-4 rounded-2xl flex items-center justify-center gap-3 shadow-sm active:scale-95 transition-transform">
-                                <img src="https://www.vectorlogo.zone/logos/google_pay/google_pay-icon.svg" class="w-6"> Google Pay
-                            </a>
-                            <a href="upi://pay?pa=saif@upi&pn=SaifStudio&am=99" class="bg-white border-2 border-purple-500 text-purple-600 font-black py-4 rounded-2xl flex items-center justify-center gap-3 shadow-sm active:scale-95 transition-transform">
-                                <img src="https://www.vectorlogo.zone/logos/phonepe/phonepe-icon.svg" class="w-6"> PhonePe
-                            </a>
-                        </div>
-                        <p class="text-[10px] mt-4 text-slate-400">Payment karne ke baad screenshot WhatsApp par bhejein.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ABOUT -->
-            <section id="sec-about" class="view-sec hidden py-4">
-                <div class="bg-white p-8 rounded-3xl shadow-xl text-center space-y-4">
-                    <h2 class="text-2xl font-black text-indigo-900">SAIF STUDIO</h2>
-                    <p class="lang-txt" data-en="Delhi, India | Trusted Service" data-hi="दिल्ली, भारत | भरोसेमंद सेवा">दिल्ली, भारत | भरोसेमंद सेवा</p>
-                </div>
-            </section>
-
-            <!-- ADMIN PANEL -->
-            <section id="sec-admin" class="view-sec hidden py-4 space-y-4">
-                <div class="bg-indigo-950 p-5 rounded-2xl shadow-lg border-l-8 border-yellow-400">
-                    <h4 class="text-white font-black text-xs uppercase mb-3 tracking-widest">Header Offer Control</h4>
                     <div class="flex gap-2">
-                        <input type="text" id="new-header-txt" placeholder="New offer text..." class="flex-1 p-3 rounded-xl text-sm outline-none font-bold">
-                        <button onclick="updateHeaderMsg()" class="bg-yellow-400 text-indigo-900 px-4 rounded-xl font-black text-xs uppercase">Update</button>
+                        <input type="text" id="coupon-code" placeholder="Coupon Code" class="flex-1 p-4 bg-slate-100 rounded-2xl outline-none border font-bold uppercase">
+                        <button onclick="applyCoupon()" class="bg-yellow-400 px-6 rounded-2xl font-black text-xs uppercase">Apply</button>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-indigo-900 p-4 rounded-2xl text-white">
-                        <p class="text-[10px] font-bold opacity-70">REVENUE</p>
-                        <h4 id="adm-rev" class="text-2xl font-black">₹0</h4>
+                    <div class="p-4 bg-indigo-50 rounded-2xl text-center border-2 border-dashed border-indigo-200">
+                        <span id="price-tag" class="font-black text-indigo-900 text-3xl">₹99</span>
                     </div>
-                    <div class="bg-white p-4 rounded-2xl border text-center">
-                        <p class="text-[10px] font-bold">TOTAL ORDERS</p>
-                        <h5 id="adm-total" class="text-2xl font-black text-indigo-900">0</h5>
+
+                    <input type="text" id="c-name" placeholder="आपका नाम" class="w-full p-4 bg-slate-100 rounded-2xl outline-none border font-bold">
+                    <input type="tel" id="c-phone" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-100 rounded-2xl outline-none border font-bold">
+                    <textarea id="c-idea" placeholder="Logo Idea..." class="w-full p-4 bg-slate-100 rounded-2xl h-24 outline-none border"></textarea>
+                    
+                    <button onclick="placeOrder()" class="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-xl uppercase">Confirm Order</button>
+                </div>
+            </div>
+
+            <!-- TRUSTED SECTION -->
+            <div class="bg-indigo-900 p-6 rounded-3xl text-white flex items-center justify-around shadow-lg">
+                <div class="text-center">
+                    <p class="text-2xl font-black">500+</p>
+                    <p class="text-[10px] uppercase font-bold opacity-70">Happy Clients</p>
+                </div>
+                <div class="h-10 w-[1px] bg-white/20"></div>
+                <div class="text-center">
+                    <p class="text-2xl font-black">4.9/5</p>
+                    <p class="text-[10px] uppercase font-bold opacity-70">Trusted Rating</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="sec-about" class="view-sec py-4">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border-t-8 border-yellow-400">
+                <h2 class="text-2xl font-black text-indigo-900 mb-4">About Saif Studio</h2>
+                <p class="text-slate-600 leading-relaxed mb-6">
+                    Hum Delhi ke No. 1 professional logo designers hain. Hum custom logo, 3D designs aur graphics banate hain. 
+                    <b>Trusted by 500+ local businesses.</b>
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl">
+                        <span class="text-2xl">📞</span>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">WhatsApp & Call</p>
+                            <p class="font-black text-indigo-900">+91 8796914489</p>
+                        </div>
                     </div>
                 </div>
-                <div id="admin-orders-list" class="space-y-4"></div>
-            </section>
-        </main>
-    </div>
+            </div>
+        </section>
+
+        <!-- COMPLAINT SECTION -->
+        <section id="sec-complain" class="view-sec py-4">
+            <div class="bg-white p-6 rounded-3xl shadow-xl border-t-8 border-red-500 text-center">
+                <h2 class="text-xl font-black text-indigo-900 mb-2">Complain Box</h2>
+                <p class="text-slate-400 text-xs mb-6 font-bold uppercase">Aapki shikayat seedha owner tak jayegi</p>
+                <textarea id="comp-text" placeholder="Apni dikkat likhein..." class="w-full p-4 bg-slate-100 rounded-2xl h-32 border outline-none mb-4 font-bold"></textarea>
+                <button onclick="sendComplaint()" class="w-full bg-red-500 text-white font-black py-4 rounded-2xl uppercase shadow-lg">Submit Complaint</button>
+            </div>
+        </section>
+
+        <!-- PENDING PAYMENTS -->
+        <section id="sec-pay-screen" class="view-sec py-4">
+            <div class="bg-white p-6 rounded-3xl shadow-xl text-center border-t-8 border-blue-500">
+                <h2 class="text-2xl font-black text-indigo-900 mb-6 font-bold">Pending Payments</h2>
+                <div id="user-orders-list" class="space-y-4">
+                    <p class="text-slate-400 italic">Order karein aur fir yahan payment karein.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN PANEL (HIDDEN) -->
+        <section id="sec-admin" class="view-sec py-4 space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-indigo-900 p-6 rounded-3xl text-white">
+                    <p class="text-[10px] font-bold opacity-70">REVENUE</p>
+                    <h4 id="adm-rev" class="text-3xl font-black">₹0</h4>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border-2 text-center">
+                    <p class="text-[10px] font-bold text-slate-400">TOTAL ORDERS</p>
+                    <h5 id="adm-total" class="text-3xl font-black text-indigo-900">0</h5>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-3xl shadow border-l-8 border-yellow-400">
+                <input type="text" id="new-header-txt" class="w-full p-3 bg-slate-100 rounded-xl outline-none mb-2" placeholder="Offer message...">
+                <button onclick="updateHeaderMsg()" class="bg-yellow-400 w-full py-2 rounded-xl font-black text-xs">UPDATE TOP BAR</button>
+            </div>
+            <div id="admin-orders-list" class="space-y-4"></div>
+        </section>
+
+    </main>
 
     <script>
-        const MY_COUPONS = { "SAIF10": 10, "OFF50": 50 };
+        // 1. WELCOME SCREEN FADE OUT
+        setTimeout(() => {
+            document.getElementById('welcome-overlay').style.opacity = '0';
+            setTimeout(() => document.getElementById('welcome-overlay').style.display = 'none', 500);
+        }, 2000);
+
+        // 2. SECRET ADMIN LOGIC (Tap 5 times on 'S' icon)
+        let tapCount = 0;
+        function adminTap() {
+            tapCount++;
+            if(tapCount >= 5) {
+                tapCount = 0;
+                checkAdmin();
+            }
+        }
+
+        const MY_COUPONS = { "WELCOME24": 20, "OFF50": 50 };
         const firebaseConfig = {
             apiKey: "AIzaSyA-5oN6F82QqpoRPzJoMiVO3Ks1A88Xs10",
             authDomain: "saiflogostudio.firebaseapp.com",
@@ -154,89 +189,104 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let basePrices = { simple: 99, '3d': 199, animation: 499 };
-        let currentPrice = 99;
-        let appliedDiscount = 0;
-        let currentLang = 'hi';
-
-        db.collection("settings").doc("offer").onSnapshot(doc => {
-            if(doc.exists) document.getElementById('header-text').innerText = doc.data().text;
-        });
-
-        function toggleLanguage() {
-            currentLang = (currentLang === 'hi') ? 'en' : 'hi';
-            document.querySelectorAll('.lang-txt').forEach(el => {
-                el.innerText = el.getAttribute('data-' + currentLang);
-            });
-            document.getElementById('lang-btn-txt').innerText = (currentLang === 'hi') ? 'English Mode' : 'हिंदी मोड';
-        }
-
-        function updateHeaderMsg() {
-            const val = document.getElementById('new-header-txt').value;
-            if(!val) return alert("Text likhen!");
-            db.collection("settings").doc("offer").set({ text: val }).then(() => {
-                alert("Header Updated!");
-                document.getElementById('new-header-txt').value = "";
-            });
-        }
+        let discount = 0;
+        let finalPrice = 99;
 
         function toggleMenu() {
             document.getElementById('side-menu').classList.toggle('open');
             document.getElementById('menu-bg').classList.toggle('hidden');
         }
 
-        function showSec(id) {
-            document.querySelectorAll('.view-sec').forEach(s => s.classList.add('hidden'));
-            document.getElementById('sec-' + id).classList.remove('hidden');
-            if(id === 'admin') loadAdminData();
-            if(!document.getElementById('menu-bg').classList.contains('hidden')) toggleMenu();
-        }
-
         function updatePrice() {
-            const cat = document.getElementById('c-cat').value;
-            currentPrice = basePrices[cat] - appliedDiscount;
-            document.getElementById('price-tag').innerText = "₹" + (currentPrice < 0 ? 0 : currentPrice);
+            const base = Number(document.getElementById('c-cat').value);
+            finalPrice = base - discount;
+            document.getElementById('price-tag').innerText = "₹" + (finalPrice < 0 ? 0 : finalPrice);
         }
 
         function applyCoupon() {
             const code = document.getElementById('coupon-code').value.toUpperCase();
             if(MY_COUPONS[code]) {
-                appliedDiscount = MY_COUPONS[code];
+                discount = MY_COUPONS[code];
                 updatePrice();
-                alert("Coupon Applied!");
-            }
+                alert("Abhinandan! Discount mil gaya.");
+            } else { alert("Invalid Coupon!"); }
         }
 
         function placeOrder() {
             const n = document.getElementById('c-name').value;
             const ph = document.getElementById('c-phone').value;
             if(!n || !ph) return alert("Details bhariye!");
-            
+
             db.collection("orders").add({
-                name: n, phone: ph, idea: document.getElementById('c-idea').value,
-                category: document.getElementById('c-cat').value,
-                price: currentPrice, status: 'Pending', time: new Date()
-            }).then(() => { 
-                confetti(); 
-                showSec('track'); 
+                name: n, phone: ph, price: finalPrice, 
+                idea: document.getElementById('c-idea').value,
+                status: 'Pending', payStatus: 'Unpaid', time: new Date()
+            }).then(() => {
+                confetti();
+                alert("Order Successful! Pay Pending section mein jayein.");
+                showSec('pay-screen');
+                loadUserOrders(ph);
             });
         }
 
+        function loadUserOrders(phone) {
+            db.collection("orders").where("phone", "==", phone).onSnapshot(snap => {
+                const list = document.getElementById('user-orders-list');
+                list.innerHTML = snap.empty ? "No pending payments." : "";
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    if(d.payStatus === 'Unpaid') {
+                        list.innerHTML += `
+                        <div class="bg-slate-50 p-5 rounded-2xl border flex justify-between items-center text-left">
+                            <div><p class="font-black text-indigo-900 italic uppercase text-[11px]">LOGO ORDER (₹${d.price})</p></div>
+                            <a href="upi://pay?pa=saif@upi&pn=SaifStudio&am=${d.price}&cu=INR" 
+                               onclick="markPaid('${doc.id}')" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md">PAYTM / UPI</a>
+                        </div>`;
+                    }
+                });
+            });
+        }
+
+        function markPaid(id) {
+            setTimeout(() => { if(confirm("Kya apne payment kar di hai?")) db.collection("orders").doc(id).update({payStatus: 'Paid'}); }, 3000);
+        }
+
+        // COMPLAINT LOGIC (Sends to WhatsApp)
+        function sendComplaint() {
+            const txt = document.getElementById('comp-text').value;
+            if(!txt) return alert("Please write something!");
+            const whatsappUrl = `https://wa.me/919310842270?text=Complain: ${encodeURIComponent(txt)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function showSec(id) {
+            document.querySelectorAll('.view-sec').forEach(s => s.classList.remove('active'));
+            document.getElementById('sec-' + id).classList.add('active');
+            if(id === 'admin') loadAdminData();
+            if(!document.getElementById('menu-bg').classList.contains('hidden')) toggleMenu();
+            window.scrollTo(0,0);
+        }
+
+        function checkAdmin() {
+            if(prompt("Admin Password:") === "Saif2012") showSec('admin');
+        }
+
+        // Admin Data Loading... (Baki logic same hai)
         function loadAdminData() {
             db.collection("orders").orderBy("time", "desc").onSnapshot(snap => {
                 let rev = 0; const list = document.getElementById('admin-orders-list');
                 list.innerHTML = ""; document.getElementById('adm-total').innerText = snap.size;
                 snap.forEach(doc => {
-                    const d = doc.data(); if(d.status === "Confirmed") rev += Number(d.price);
+                    const d = doc.data(); if(d.payStatus === "Paid") rev += Number(d.price);
                     list.innerHTML += `
-                        <div class="bg-white p-4 rounded-xl border mb-3 relative">
-                            <button onclick="deleteOrder('${doc.id}')" class="absolute top-2 right-2 text-red-500 font-bold text-xl px-2">×</button>
-                            <div class="flex justify-between font-bold text-xs mb-2 pr-6">
-                                <span>${d.name} (${d.phone}) - ₹${d.price}</span>
+                        <div class="bg-white p-4 rounded-2xl border mb-2 shadow-sm">
+                            <div class="flex justify-between font-bold text-xs mb-1">
+                                <span>${d.name} (${d.phone})</span>
+                                <span class="${d.payStatus==='Paid'?'text-green-500':'text-red-400'}">${d.payStatus}</span>
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="updateStatus('${doc.id}', '${d.phone}', 'Confirmed')" class="text-green-600 bg-green-50 px-3 py-1 rounded text-[10px] font-bold">CONFIRM</button>
-                                <button onclick="updateStatus('${doc.id}', '${d.phone}', 'Cancelled')" class="text-red-500 bg-red-50 px-3 py-1 rounded text-[10px] font-bold">CANCEL</button>
+                                <button onclick="db.collection('orders').doc('${doc.id}').update({status:'Confirmed'})" class="bg-green-100 text-green-600 px-3 py-1 rounded-lg text-[9px] font-bold">CONFIRM</button>
+                                <button onclick="db.collection('orders').doc('${doc.id}').delete()" class="bg-red-100 text-red-600 px-3 py-1 rounded-lg text-[9px] font-bold">DELETE</button>
                             </div>
                         </div>`;
                 });
@@ -244,20 +294,15 @@
             });
         }
 
-        function deleteOrder(id) {
-            if(confirm("Order delete karein?")) {
-                db.collection("orders").doc(id).delete().then(() => alert("Deleted!"));
-            }
+        function updateHeaderMsg() {
+            const v = document.getElementById('new-header-txt').value;
+            db.collection("settings").doc("offer").set({text: v}).then(() => alert("Top Bar Updated!"));
         }
 
-        function updateStatus(id, phone, status) {
-            db.collection("orders").doc(id).update({ status: status }).then(() => {
-                const msg = `Hi, your order at Saif Studio has been ${status}.`;
-                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
-            });
-        }
+        db.collection("settings").doc("offer").onSnapshot(doc => {
+            if(doc.exists) document.getElementById('header-text').innerText = doc.data().text;
+        });
 
-        function checkAdmin() { if(prompt("Pass:") === "Saif2012") showSec('admin'); }
     </script>
 </body>
 </html>
