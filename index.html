@@ -13,11 +13,14 @@
         .bg-primary { background-color: var(--p-color); }
         .view-sec { display: none; }
         .view-sec.active { display: block; }
-        #welcome-overlay { position: fixed; inset: 0; background: var(--p-color); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.5s; }
+        #welcome-overlay, #thankyou-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.5s; }
+        #welcome-overlay { background: var(--p-color); }
+        #thankyou-overlay { background: rgba(255, 255, 255, 0.95); display: none; }
         #side-menu { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: white; z-index: 1001; transition: 0.4s; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
         #side-menu.open { left: 0; }
-        .offer-bar { animation: blink 1.5s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .offer-header { background: #f59e0b; color: #fff; text-align: center; font-weight: 900; padding: 6px; font-size: 12px; animation: pulse-bg 2s infinite; }
+        @keyframes pulse-bg { 0%, 100% { background: #f59e0b; } 50% { background: #ef4444; } }
     </style>
 </head>
 <body class="bg-slate-50 font-sans">
@@ -26,11 +29,27 @@
     <div id="welcome-overlay">
         <div class="text-center text-white">
             <h1 class="text-4xl font-black italic animate-bounce">WELCOME</h1>
-            <p class="text-yellow-400 font-bold tracking-widest">SAIF STUDIO</p>
+            <p class="text-yellow-400 font-bold tracking-widest uppercase">Saif Studio Delhi</p>
         </div>
     </div>
 
-    <!-- SIDE MENU (FIXED) -->
+    <!-- THANK YOU OVERLAY -->
+    <div id="thankyou-overlay">
+        <div class="text-center">
+            <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg animate-bounce">
+                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h2 class="text-3xl font-black text-indigo-900 uppercase">Shukriya!</h2>
+            <p class="text-slate-600 font-bold">Aapka Order Mil Gaya Hai.</p>
+        </div>
+    </div>
+
+    <!-- HIGHLIGHTED OFFER BAR -->
+    <div class="offer-header uppercase tracking-tighter">
+        🔥 Special Offer: Use Code "WELCOME" for 20% Discount! 🔥
+    </div>
+
+    <!-- SIDE MENU -->
     <div id="menu-bg" onclick="toggleMenu()" class="fixed inset-0 bg-black/50 z-[1000] hidden"></div>
     <div id="side-menu">
         <div class="bg-primary p-8 text-white">
@@ -47,50 +66,68 @@
     <!-- NAV BAR -->
     <nav class="bg-primary p-4 text-white flex justify-between items-center sticky top-0 z-[100] shadow-lg">
         <button onclick="toggleMenu()" class="text-2xl">☰</button>
-        <h1 onclick="adminSecretTap()" class="font-black italic tracking-tighter cursor-pointer text-lg">SAIF STUDIO</h1>
-        <div class="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-indigo-900 font-black text-xs border-2 border-white">S</div>
+        <h1 id="admin-trigger" onclick="adminSecretTap()" class="font-black italic tracking-tighter cursor-pointer text-lg">SAIF STUDIO</h1>
+        <div class="w-8 h-8 rounded-full bg-yellow-400 border-2 border-white"></div>
     </nav>
 
     <main class="max-w-4xl mx-auto p-4">
         
-        <!-- HOME / ORDER -->
+        <!-- HOME / ORDER SECTION -->
         <section id="sec-home" class="view-sec active py-4">
             <div class="bg-white p-6 rounded-[2rem] shadow-xl border-b-8 border-primary mb-6">
-                <h2 class="text-xl font-black text-indigo-900 mb-4 uppercase text-center">Order Your Logo</h2>
+                <h2 class="text-xl font-black text-indigo-900 mb-4 uppercase text-center">Order Your Design</h2>
                 <div class="space-y-4">
-                    <select id="c-cat" onchange="updatePrice()" class="w-full p-4 bg-slate-100 rounded-2xl font-bold border">
+                    <select id="c-cat" onchange="updatePrice()" class="w-full p-4 bg-slate-100 rounded-2xl font-bold border outline-none">
                         <option value="99">Simple Logo (₹99)</option>
-                        <option value="199">3D Logo (₹199)</option>
-                        <option value="499">Animation (₹499)</option>
+                        <option value="299">3D Cinematic Logo (₹299)</option>
+                        <option value="599">Logo Animation (₹599)</option>
                     </select>
 
-                    <!-- COUPON SYSTEM UI -->
                     <div class="flex gap-2">
-                        <input type="text" id="coupon-code" placeholder="Apply Coupon" class="flex-1 p-3 bg-slate-50 border rounded-xl font-bold text-sm uppercase">
-                        <button onclick="applyCoupon()" class="bg-indigo-100 text-indigo-700 px-4 rounded-xl font-black text-xs">APPLY</button>
+                        <input type="text" id="coupon-code" placeholder="Apply Coupon" class="flex-1 p-3 bg-slate-50 border rounded-xl font-bold text-sm uppercase outline-none">
+                        <button onclick="applyCoupon()" class="bg-indigo-100 text-indigo-700 px-6 rounded-xl font-black text-xs">APPLY</button>
                     </div>
 
                     <div class="p-4 bg-indigo-50 rounded-2xl text-center border-2 border-dashed border-indigo-200">
                         <span id="price-tag" class="font-black text-indigo-900 text-3xl">₹99</span>
-                        <p id="coupon-msg" class="text-[10px] text-green-600 font-bold mt-1 hidden italic">Coupon Applied!</p>
+                        <p id="coupon-msg" class="text-[10px] text-green-600 font-bold mt-1 hidden italic">Discount Applied!</p>
                     </div>
 
-                    <input type="text" id="c-name" placeholder="आपका नाम" class="w-full p-4 bg-slate-100 rounded-2xl border font-bold">
-                    <input type="tel" id="c-phone" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-100 rounded-2xl border font-bold">
-                    <textarea id="c-idea" placeholder="Logo Idea..." class="w-full p-4 bg-slate-100 rounded-2xl h-24 border font-semibold"></textarea>
+                    <input type="text" id="c-name" placeholder="Apna Naam" class="w-full p-4 bg-slate-100 rounded-2xl border font-bold outline-none">
+                    <input type="tel" id="c-phone" placeholder="WhatsApp Number" class="w-full p-4 bg-slate-100 rounded-2xl border font-bold outline-none">
+                    <textarea id="c-idea" placeholder="Design Idea..." class="w-full p-4 bg-slate-100 rounded-2xl h-24 border font-semibold outline-none"></textarea>
                     
                     <button onclick="placeOrder()" class="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-xl uppercase">Confirm Order</button>
                 </div>
             </div>
         </section>
 
-        <!-- PAY SCREEN (PENDING PAYMENTS) -->
+        <!-- ADMIN PANEL SECTION -->
+        <section id="sec-admin" class="view-sec py-4 space-y-6">
+            <div class="bg-white p-6 rounded-3xl shadow-lg border-2 border-indigo-50">
+                <h2 class="text-center font-black text-indigo-900 uppercase mb-4">Saif Studio Admin</h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-indigo-900 p-5 rounded-2xl text-white text-center">
+                        <p class="text-[9px] font-bold opacity-60 uppercase">Total Revenue</p>
+                        <h4 id="adm-rev" class="text-2xl font-black italic">₹0</h4>
+                    </div>
+                    <div class="bg-slate-50 p-5 rounded-2xl border-2 border-slate-100 text-center">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Total Orders</p>
+                        <h5 id="adm-total" class="text-2xl font-black text-indigo-900 italic">0</h5>
+                    </div>
+                </div>
+            </div>
+            <div id="admin-orders-list" class="space-y-3">
+                <!-- Orders will appear here -->
+            </div>
+        </section>
+
+        <!-- PAY SCREEN -->
         <section id="sec-pay-screen" class="view-sec py-4">
             <div class="bg-white p-6 rounded-3xl shadow-xl text-center border-t-8 border-blue-500">
                 <h2 class="text-2xl font-black text-indigo-900 mb-2">Pending Payments</h2>
-                <p class="text-[10px] text-slate-400 mb-6 font-bold uppercase italic">Apna number enter karke bill check karein</p>
                 <div class="flex gap-2 mb-6">
-                    <input type="tel" id="search-phone" placeholder="WhatsApp Number" class="flex-1 p-4 bg-slate-100 rounded-2xl border font-bold">
+                    <input type="tel" id="search-phone" placeholder="Phone Number" class="flex-1 p-4 bg-slate-100 rounded-2xl border font-bold outline-none">
                     <button onclick="loadUserOrders()" class="bg-primary text-white px-6 rounded-2xl font-bold">Search</button>
                 </div>
                 <div id="user-orders-list" class="space-y-4"></div>
@@ -100,7 +137,7 @@
         <!-- COMPLAINT -->
         <section id="sec-complain" class="view-sec py-4">
             <div class="bg-white p-6 rounded-3xl shadow-xl border-t-8 border-red-500">
-                <textarea id="comp-text" placeholder="Apni shikayat likhein..." class="w-full p-4 bg-slate-100 rounded-2xl h-32 border font-bold mb-4"></textarea>
+                <textarea id="comp-text" placeholder="Apni shikayat..." class="w-full p-4 bg-slate-100 rounded-2xl h-32 border font-bold mb-4 outline-none"></textarea>
                 <button onclick="sendComplaint()" class="w-full bg-red-500 text-white font-black py-4 rounded-2xl uppercase">Submit</button>
             </div>
         </section>
@@ -120,97 +157,89 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let basePrice = 99;
-        let discountedPrice = 99;
-        let isCouponApplied = false;
+        let basePrice = 99, discountedPrice = 99, isCouponApplied = false;
 
-        // UI ACTIONS
+        // UI HELPERS
         setTimeout(() => { document.getElementById('welcome-overlay').style.display = 'none'; }, 2000);
-        
-        function toggleMenu() {
-            document.getElementById('side-menu').classList.toggle('open');
-            document.getElementById('menu-bg').classList.toggle('hidden');
-        }
-
-        function showSec(id) {
-            document.querySelectorAll('.view-sec').forEach(s => s.classList.remove('active'));
-            document.getElementById('sec-' + id).classList.add('active');
+        function toggleMenu() { document.getElementById('side-menu').classList.toggle('open'); document.getElementById('menu-bg').classList.toggle('hidden'); }
+        function showSec(id) { 
+            document.querySelectorAll('.view-sec').forEach(s => s.classList.remove('active')); 
+            document.getElementById('sec-' + id).classList.add('active'); 
             if(!document.getElementById('menu-bg').classList.contains('hidden')) toggleMenu();
+            if(id === 'admin') loadAdminData();
         }
 
-        // PRICE & COUPON LOGIC
-        function updatePrice() {
-            basePrice = Number(document.getElementById('c-cat').value);
-            discountedPrice = isCouponApplied ? Math.floor(basePrice * 0.8) : basePrice;
-            document.getElementById('price-tag').innerText = "₹" + discountedPrice;
-        }
+        // PRICE LOGIC
+        function updatePrice() { basePrice = Number(document.getElementById('c-cat').value); discountedPrice = isCouponApplied ? Math.floor(basePrice * 0.8) : basePrice; document.getElementById('price-tag').innerText = "₹" + discountedPrice; }
+        function applyCoupon() { let code = document.getElementById('coupon-code').value.toUpperCase(); if(code === "SAIF20" || code === "WELCOME") { isCouponApplied = true; updatePrice(); document.getElementById('coupon-msg').classList.remove('hidden'); alert("Coupon Success!"); } else { alert("Invalid Code!"); } }
 
-        function applyCoupon() {
-            const code = document.getElementById('coupon-code').value.toUpperCase();
-            if(code === "SAIF20" || code === "WELCOME") {
-                isCouponApplied = true;
-                discountedPrice = Math.floor(basePrice * 0.8);
-                document.getElementById('price-tag').innerText = "₹" + discountedPrice;
-                document.getElementById('coupon-msg').classList.remove('hidden');
-                alert("Coupon Applied! 20% Discount mil gaya.");
-            } else {
-                alert("Invalid Coupon Code!");
-            }
-        }
-
-        // DATABASE ACTIONS
+        // ORDERS
         function placeOrder() {
             const n = document.getElementById('c-name').value, ph = document.getElementById('c-phone').value;
-            if(!n || !ph) return alert("Details bharo!");
-            db.collection("orders").add({
-                name: n, phone: ph, price: discountedPrice, 
-                idea: document.getElementById('c-idea').value,
-                payStatus: 'Unpaid', time: new Date()
-            }).then(() => {
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                alert("Order Saved! Pending payment section mein check karein.");
-                showSec('pay-screen');
+            if(!n || !ph) return alert("Details bhariye!");
+            db.collection("orders").add({ name: n, phone: ph, price: discountedPrice, idea: document.getElementById('c-idea').value, payStatus: 'Unpaid', status: 'New', time: new Date() })
+            .then(() => {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                document.getElementById('thankyou-overlay').style.display = 'flex';
+                setTimeout(() => { document.getElementById('thankyou-overlay').style.display = 'none'; showSec('pay-screen'); }, 3000);
             });
         }
 
+        // LOAD PENDING BILLS
         function loadUserOrders() {
             const ph = document.getElementById('search-phone').value;
-            if(!ph) return alert("Number toh dalo!");
             db.collection("orders").where("phone", "==", ph).onSnapshot(snap => {
                 const list = document.getElementById('user-orders-list');
-                list.innerHTML = snap.empty ? "<p class='font-bold text-red-400'>No orders found.</p>" : "";
+                list.innerHTML = snap.empty ? "<p class='font-bold text-red-500'>No orders found.</p>" : "";
                 snap.forEach(doc => {
                     const d = doc.data();
                     if(d.payStatus === 'Unpaid') {
-                        list.innerHTML += `
-                        <div class="bg-slate-50 p-5 rounded-2xl border-2 border-indigo-100 flex justify-between items-center text-left">
-                            <div>
-                                <p class="font-black text-indigo-900 text-sm">LOGO ORDER</p>
-                                <p class="text-xs font-bold text-slate-500 italic">Bill Amount: ₹${d.price}</p>
-                            </div>
-                            <a href="upi://pay?pa=saif@upi&pn=SaifStudio&am=${d.price}&cu=INR" class="bg-blue-600 text-white px-5 py-2 rounded-xl text-xs font-black shadow-lg shadow-blue-200">PAY NOW</a>
+                        list.innerHTML += `<div class="bg-slate-50 p-4 rounded-2xl border-2 border-indigo-100 flex justify-between items-center text-left">
+                            <div><p class="font-black text-indigo-900 text-sm">PENDING LOGO</p><p class="text-xs font-bold text-slate-500">Bill: ₹${d.price}</p></div>
+                            <a href="upi://pay?pa=saif@upi&pn=SaifStudio&am=${d.price}&cu=INR" class="bg-blue-600 text-white px-5 py-2 rounded-xl text-xs font-black shadow-lg">PAY NOW</a>
                         </div>`;
                     }
                 });
             });
         }
 
-        function sendComplaint() {
-            const msg = document.getElementById('comp-text').value;
-            if(!msg) return alert("Message likho!");
-            db.collection("complaints").add({ message: msg, time: new Date() })
-            .then(() => alert("Shikayat darj ho gayi!"));
+        // ADMIN LOGIC
+        function loadAdminData() {
+            db.collection("orders").orderBy("time", "desc").onSnapshot(snap => {
+                let revenue = 0; let count = 0;
+                const list = document.getElementById('admin-orders-list');
+                list.innerHTML = "";
+                snap.forEach(doc => {
+                    const d = doc.data(); count++;
+                    if(d.payStatus === "Paid") revenue += Number(d.price);
+                    list.innerHTML += `<div class="bg-white p-4 rounded-xl shadow-sm border flex justify-between items-center">
+                        <div><p class="font-bold text-indigo-900">${d.name}</p><p class="text-[10px] text-slate-400">${d.phone}</p></div>
+                        <p class="font-black text-indigo-600">₹${d.price}</p>
+                    </div>`;
+                });
+                document.getElementById('adm-rev').innerText = "₹" + revenue;
+                document.getElementById('adm-total').innerText = count;
+            });
         }
 
-        // SECRET ADMIN
-        let tapCount = 0;
+        function sendComplaint() {
+            const msg = document.getElementById('comp-text').value;
+            if(!msg) return alert("Write something!");
+            db.collection("complaints").add({ message: msg, time: new Date() }).then(() => { alert("Sent!"); document.getElementById('comp-text').value = ""; });
+        }
+
+        // SECRET ADMIN TRIGGER (TAP 3 TIMES)
+        let tapCount = 0; let tapTimer;
         function adminSecretTap() {
             tapCount++;
+            clearTimeout(tapTimer);
             if(tapCount === 3) {
-                let p = prompt("Admin Key:");
-                if(p === "Saif2012") alert("Admin section restricted in this view.");
                 tapCount = 0;
+                let p = prompt("Admin Key:");
+                if(p === "Saif2012") showSec('admin');
+                else alert("Wrong Key!");
             }
+            tapTimer = setTimeout(() => { tapCount = 0; }, 500);
         }
     </script>
 </body>
