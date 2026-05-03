@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saif Studio | Pro Dashboard</title>
+    <title>Saif Studio | 😍logon ki passand 😍</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <!-- HEADER (3 clicks for Admin) -->
+    <!-- HEADER -->
     <nav class="bg-primary p-4 text-white flex justify-between items-center sticky top-0 z-[100]">
         <div class="w-10 h-10 rounded-xl s-logo flex items-center justify-center text-indigo-900 font-black italic text-xl">S</div>
         <h1 onclick="adminSecretTap()" class="font-black italic text-xl cursor-pointer select-none">SAIF STUDIO</h1>
@@ -62,11 +62,11 @@
                 <div class="space-y-4">
                     <select id="c-cat" onchange="updatePrice()" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-2 outline-none">
                         <option value="99">Simple Logo (₹99)</option>
-                        <option value="299">3D Cinematic Logo (₹299)</option>
-                        <option value="599">Animation Logo (₹599)</option>
+                        <option value="199">3D Cinematic Logo (₹199)</option>
+                        <option value="499">Animation Logo (₹499)</option>
                     </select>
                     <div class="flex gap-2">
-                        <input type="text" id="coupon-code" placeholder="" class="flex-1 p-3 bg-slate-50 border-2 rounded-2xl font-bold uppercase text-center">
+                        <input type="text" id="coupon-code" placeholder="SAIF20" class="flex-1 p-3 bg-slate-50 border-2 rounded-2xl font-bold uppercase text-center">
                         <button onclick="applyDiscount()" class="bg-indigo-100 text-indigo-800 px-5 rounded-2xl font-black text-xs">APPLY</button>
                     </div>
                     <div class="p-5 bg-indigo-50 rounded-3xl text-center border-2 border-dashed border-indigo-200">
@@ -75,18 +75,38 @@
                     <input type="text" id="c-name" placeholder="Client Name" class="w-full p-4 bg-slate-50 rounded-2xl border-2 font-bold">
                     <input type="tel" id="c-phone" placeholder="WhatsApp No." class="w-full p-4 bg-slate-50 rounded-2xl border-2 font-bold">
                     <textarea id="c-idea" placeholder="Write design details..." class="w-full p-4 bg-slate-50 rounded-2xl h-20 border-2 font-semibold"></textarea>
-                    <button onclick="placeOrder()" class="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-xl uppercase">Confirm Order</button>
+                    <button onclick="placeOrder()" class="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-xl uppercase tracking-widest">Confirm Order</button>
                 </div>
             </div>
         </section>
 
         <!-- BILLS SECTION -->
         <section id="sec-pay-screen" class="view-sec">
-            <div class="bg-white p-6 rounded-3xl shadow-xl text-center">
+            <div class="bg-white p-6 rounded-3xl shadow-xl text-center border-b-8 border-primary">
                 <h2 class="text-xl font-black text-indigo-900 mb-6 uppercase">My Bills</h2>
-                <input type="tel" id="search-phone" placeholder="WhatsApp No" class="w-full p-4 bg-slate-50 rounded-2xl border-2 font-bold mb-4">
-                <button onclick="loadUserOrders()" class="w-full bg-primary text-white py-3 rounded-2xl font-black mb-6">SEARCH</button>
+                <input type="tel" id="search-phone" placeholder="Enter WhatsApp No to Pay" class="w-full p-4 bg-slate-50 rounded-2xl border-2 font-bold mb-4 text-center">
+                <button onclick="loadUserOrders()" class="w-full bg-primary text-white py-3 rounded-2xl font-black mb-6 uppercase">View & Pay Bill</button>
                 <div id="user-orders-list" class="space-y-4"></div>
+            </div>
+        </section>
+
+        <!-- ABOUT US SECTION -->
+        <section id="sec-about" class="view-sec">
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border-b-8 border-indigo-600">
+                <h2 class="text-2xl font-black text-indigo-950 uppercase mb-4 text-center italic">About Saif Studio</h2>
+                <p class="text-slate-600 font-bold text-center leading-relaxed italic">
+                    Delhi #1 Logo Studio. Hum banate hain professional 3D, Animation, aur Simple logos jo aapke brand ki pehchan bante hain. Quality aur Trust hamari pehli pehchan hai.
+                </p>
+                <div class="mt-8 grid grid-cols-2 gap-4">
+                    <div class="bg-indigo-50 p-4 rounded-2xl text-center border">
+                        <p class="text-2xl font-black text-indigo-900">500+</p>
+                        <p class="text-[10px] font-bold text-slate-500 uppercase">Clients</p>
+                    </div>
+                    <div class="bg-indigo-50 p-4 rounded-2xl text-center border">
+                        <p class="text-2xl font-black text-indigo-900">24h</p>
+                        <p class="text-[10px] font-bold text-slate-500 uppercase">Delivery</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -106,6 +126,8 @@
     <div class="nav-bottom">
         <button onclick="showSec('home')" class="nav-item active" id="nav-home">🏠<span>HOME</span></button>
         <button onclick="showSec('pay-screen')" class="nav-item" id="nav-pay">💸<span>BILLS</span></button>
+        <button onclick="showSec('about')" class="nav-item" id="nav-about">ℹ️<span>ABOUT</span></button>
+        <button onclick="contactHelp()" class="nav-item">💬<span>HELP</span></button>
     </div>
 
     <script>
@@ -136,28 +158,39 @@
             document.querySelectorAll('.view-sec').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('sec-' + id).classList.add('active');
-            if(id === 'home') document.getElementById('nav-home').classList.add('active');
-            if(id === 'pay-screen') document.getElementById('nav-pay').classList.add('active');
+            if(document.getElementById('nav-' + id)) document.getElementById('nav-' + id).classList.add('active');
             if(id === 'admin') loadAdminData();
+            window.scrollTo(0,0);
         }
 
         function placeOrder() {
             const n = document.getElementById('c-name').value, ph = document.getElementById('c-phone').value;
             if(!n || !ph) return alert("Details bhariye!");
             db.collection("orders").add({ name: n, phone: ph, price: finalPrice, idea: document.getElementById('c-idea').value, time: new Date() })
-            .then(() => { confetti(); showSec('pay-screen'); });
+            .then(() => { 
+                confetti(); 
+                alert("Order Successful! Thank You. Ab aap apni payment kar sakte hain."); 
+                document.getElementById('search-phone').value = ph;
+                showSec('pay-screen');
+                loadUserOrders(); 
+            });
+        }
+
+        function contactHelp() {
+            window.open(`https://wa.me/${WHATSAPP_NO}?text=Hello Saif Studio, mujhe help chahiye.`);
         }
 
         function loadUserOrders() {
             const ph = document.getElementById('search-phone').value;
+            if(!ph) return alert("Search ke liye phone number daalein");
             db.collection("orders").where("phone", "==", ph).onSnapshot(snap => {
                 const list = document.getElementById('user-orders-list');
-                list.innerHTML = snap.empty ? "<p class='font-bold opacity-30'>No Bills.</p>" : "";
+                list.innerHTML = snap.empty ? "<p class='font-bold opacity-30 mt-4'>Koi order nahi mila.</p>" : "";
                 snap.forEach(doc => {
                     const d = doc.data();
-                    list.innerHTML += `<div class="bg-indigo-50 p-5 rounded-3xl flex justify-between items-center border-2 border-indigo-100">
-                        <div class="text-left"><p class="font-black text-indigo-900 text-2xl">₹${d.price}</p><p class="text-[9px] font-bold opacity-40 uppercase">Pending</p></div>
-                        <a href="upi://pay?pa=${MY_UPI_ID}&pn=${MY_NAME}&am=${d.price}&cu=INR" class="bg-blue-600 text-white px-5 py-2 rounded-xl font-black text-xs">PAY NOW</a>
+                    list.innerHTML += `<div class="bg-indigo-50 p-5 rounded-3xl flex justify-between items-center border-2 border-indigo-100 shadow-sm animate-bounce-short">
+                        <div class="text-left"><p class="font-black text-indigo-900 text-2xl">₹${d.price}</p><p class="text-[9px] font-bold opacity-40 uppercase tracking-widest">Order Pending</p></div>
+                        <a href="upi://pay?pa=${MY_UPI_ID}&pn=${MY_NAME}&am=${d.price}&cu=INR" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-black text-xs shadow-lg">PAY NOW</a>
                     </div>`;
                 });
             });
@@ -170,21 +203,21 @@
                 list.innerHTML = "";
                 snap.forEach(doc => {
                     const d = doc.data();
-                    list.innerHTML += `<div class="bg-white p-5 rounded-3xl shadow-sm border">
+                    list.innerHTML += `<div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100">
                         <div class="flex justify-between font-black uppercase text-indigo-900 text-sm"><span>${d.name}</span><span class="text-green-600">₹${d.price}</span></div>
                         <p class="text-[10px] font-bold text-slate-400 mb-2">${d.phone}</p>
                         <p class="text-[11px] bg-slate-50 p-3 rounded-xl italic border border-dashed">${d.idea || 'No Details'}</p>
                         <div class="flex gap-2 mt-4">
-                            <button onclick="confirmOrder('${d.phone}', '${d.name}', ${d.price})" class="flex-1 bg-green-500 text-white py-3 rounded-xl font-black text-[10px] uppercase">WhatsApp Confirm</button>
-                            <button onclick="deleteOrder('${doc.id}')" class="bg-red-50 text-red-500 px-4 rounded-xl font-bold text-xs uppercase">Del</button>
+                            <button onclick="confirmOrder('${d.phone}', '${d.name}', ${d.price})" class="flex-1 bg-green-500 text-white py-3 rounded-xl font-black text-[10px] uppercase shadow-md">Confirm</button>
+                            <button onclick="deleteOrder('${doc.id}')" class="bg-red-50 text-red-500 px-4 rounded-xl font-bold text-xs">Del</button>
                         </div>
                     </div>`;
                 });
             });
         }
 
-        function confirmOrder(ph, name, price) { window.open(`https://wa.me/${ph}?text=Hello ${name}, Aapka ₹${price} wala order confirm ho gaya hai!`); }
-        function deleteOrder(id) { if(confirm("Delete?")) db.collection("orders").doc(id).delete(); }
+        function confirmOrder(ph, name, price) { window.open(`https://wa.me/${ph}?text=Hello ${name}, Aapka Saif Studio wala ₹${price} ka order confirm ho gaya hai!`); }
+        function deleteOrder(id) { if(confirm("Order delete karein?")) db.collection("orders").doc(id).delete(); }
 
         let tapCount = 0; 
         function adminSecretTap() { 
@@ -198,4 +231,4 @@
         }
     </script>
 </body>
-</html
+</html>
