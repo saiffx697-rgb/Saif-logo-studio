@@ -144,15 +144,73 @@
             finalPrice = Number(document.getElementById('c-cat').value);
             if(isDiscounted) finalPrice = Math.floor(finalPrice * 0.8);
             document.getElementById('price-tag').innerText = "₹" + finalPrice;
-        }
+    
+// 1. Is naye function ko purane applyDiscount ki jagah paste karein
+async function applyDiscount() {
+    const code = document.getElementById('coupon-code').value.toUpperCase();
+    const phone = document.getElementById('c-phone').value;
 
-        function applyDiscount() {
-            if(document.getElementById('coupon-code').value.toUpperCase() === "WELCOME20") {
-                isDiscounted = true;
-                updatePrice();
-                alert("Discount Applied!");
-            }
+    // Pehle check karein ki phone number dala hai ya nahi
+    if (!phone || phone.length < 10) {
+        alert("Pehle apna sahi WhatsApp number bhariye tabhi coupon apply hoga!");
+        return;
+    }
+
+    if (code === "SAIF20") {
+        // Firebase mein check karein ki kya is number ne pehle discount liya hai
+        const usedCheck = await db.collection("used_coupons").doc(phone).get();
+
+        if (usedCheck.exists) {
+            alert("Sorry! Aap ye offer ek baar use kar chuke hain.");
+            document.getElementById('coupon-code').value = ""; // Clear code
+        } else {
+            isDiscounted = true;
+            updatePrice();
+            alert("Badhai ho! 20% Discount apply ho gaya hai.");
+            // Note: Hum used_coupons mein entry order place hone par hi karenge
         }
+    } else {
+        alert("Galat Coupon Code!");
+    }
+}
+
+// 2. Ab 'placeOrder' function ko thoda update karna hoga taaki use record kiya ja sake
+// Apne purane placeOrder function ko isse badal dein:
+function placeOrder() {
+    const n = document.getElementById('c-name').value;
+    const ph = document.getElementById('c-phone').value;
+    const idea = document.getElementById('c-idea').value;
+
+    if (!n || !ph) return alert("Details bhariye!");
+
+    db.collection("orders").add({
+        name: n,
+        phone: ph,
+        price: finalPrice,
+        idea: idea,
+        couponUsed: isDiscounted, // Record rahega ki coupon use hua ya nahi
+        time: new Date()
+    })
+    .then(async () => {
+        // Agar discount use kiya hai, toh us number ko block list mein daal do
+        if (isDiscounted) {
+            await db.collection("used_coupons").doc(ph).set({ 
+                used: true, 
+                date: new Date() 
+            });
+        }
+        
+        confetti(); 
+        alert("Order Successful! Thank You."); 
+        document.getElementById('search-phone').value = ph;
+        showSec('pay-screen');
+        loadUserOrders(); 
+    });
+    
+            
+            
+            }
+        
 
         function showSec(id) {
             document.querySelectorAll('.view-sec').forEach(s => s.classList.remove('active'));
