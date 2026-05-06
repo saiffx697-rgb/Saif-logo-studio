@@ -26,27 +26,23 @@
 <body class="bg-slate-50 font-sans">
 
     <script>
-        // CONFIGURATION
         const MY_UPI_ID = "7210065769@ibl"; 
         const MY_NAME = "Saif Studio";
         const WHATSAPP_NO = "918796914489"; 
     </script>
 
-    <!-- WELCOME SCREEN -->
     <div id="welcome-overlay">
         <div class="text-center text-white">
             <h1 class="text-5xl font-black italic animate-pulse">SAIF STUDIO</h1>
         </div>
     </div>
 
-    <!-- HEADER -->
     <nav class="bg-primary p-4 text-white flex justify-between items-center sticky top-0 z-[100]">
         <div class="w-10 h-10 rounded-xl s-logo flex items-center justify-center text-indigo-900 font-black italic text-xl">S</div>
         <h1 onclick="adminSecretTap()" class="font-black italic text-xl cursor-pointer select-none">SAIF STUDIO</h1>
         <div class="w-10"></div>
     </nav>
 
-    <!-- TOP MARQUEE -->
     <div class="bg-yellow-400 py-1.5 border-b border-yellow-500 overflow-hidden">
         <div class="whitespace-nowrap animate-marquee text-[11px] font-black text-indigo-900 uppercase">
             🔥 Special Offer: 20% OFF on all Logos! Use Code: WELCOME20 🔥 High-Quality Animation & 3D Designs 🔥
@@ -55,7 +51,6 @@
 
     <main class="max-w-md mx-auto p-4">
         
-        <!-- HOME SECTION -->
         <section id="sec-home" class="view-sec active">
             <div class="bg-white p-6 rounded-[2.5rem] shadow-xl border-b-[12px] border-primary mb-6">
                 <h2 class="text-center font-black text-indigo-950 uppercase mb-6">New Design Order</h2>
@@ -80,7 +75,6 @@
             </div>
         </section>
 
-        <!-- BILLS SECTION -->
         <section id="sec-pay-screen" class="view-sec">
             <div class="bg-white p-6 rounded-3xl shadow-xl text-center border-b-8 border-primary">
                 <h2 class="text-xl font-black text-indigo-900 mb-6 uppercase">My Bills</h2>
@@ -90,7 +84,6 @@
             </div>
         </section>
 
-        <!-- ABOUT US SECTION -->
         <section id="sec-about" class="view-sec">
             <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border-b-8 border-indigo-600">
                 <h2 class="text-2xl font-black text-indigo-950 uppercase mb-4 text-center italic">About Saif Studio</h2>
@@ -110,7 +103,6 @@
             </div>
         </section>
 
-        <!-- SECRET ADMIN PANEL -->
         <section id="sec-admin" class="view-sec py-4 space-y-4">
             <div class="bg-indigo-950 p-6 rounded-3xl text-white text-center">
                 <p class="text-[10px] font-bold opacity-60 uppercase mb-1">Live Dashboard</p>
@@ -122,7 +114,6 @@
 
     </main>
 
-    <!-- NAVIGATION -->
     <div class="nav-bottom">
         <button onclick="showSec('home')" class="nav-item active" id="nav-home">🏠<span>HOME</span></button>
         <button onclick="showSec('pay-screen')" class="nav-item" id="nav-pay">💸<span>BILLS</span></button>
@@ -138,47 +129,45 @@
         let finalPrice = 99;
         let isDiscounted = false;
 
-        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('welcome-overlay').classList.add('hidden-screen'); }, 2000); });
+        window.addEventListener('load', () => { 
+            setTimeout(() => { 
+                const overlay = document.getElementById('welcome-overlay');
+                if(overlay) overlay.classList.add('hidden-screen'); 
+            }, 2500); 
+        });
 
         function updatePrice() {
-            finalPrice = Number(document.getElementById('c-cat').value);
-            if(isDiscounted) finalPrice = Math.floor(finalPrice * 0.8);
+            let basePrice = Number(document.getElementById('c-cat').value);
+            finalPrice = isDiscounted ? Math.floor(basePrice * 0.8) : basePrice;
             document.getElementById('price-tag').innerText = "₹" + finalPrice;
-    // 1. Updated Apply Discount Function
+        }
+
         async function applyDiscount() {
             const code = document.getElementById('coupon-code').value.toUpperCase();
             const phone = document.getElementById('c-phone').value;
 
             if (!phone || phone.length < 10) {
-                alert("Pehle apna sahi WhatsApp number bhariye tabhi coupon apply hoga!");
+                alert("Pehle apna sahi WhatsApp number bhariye!");
                 return;
             }
 
-            if (code === "SAIF20") {
+            if (code === "WELCOME20") {
                 try {
-                    // Firebase check
                     const usedCheck = await db.collection("used_coupons").doc(phone).get();
-
                     if (usedCheck.exists) {
-                        alert("Sorry! Aap ye offer ek baar use kar chuke hain.");
-                        document.getElementById('coupon-code').value = "";
+                        alert("Aap ye coupon pehle use kar chuke hain!");
                         isDiscounted = false;
-                        updatePrice();
                     } else {
                         isDiscounted = true;
-                        updatePrice();
-                        alert("Badhai ho! 20% Discount apply ho gaya hai.");
+                        alert("20% Discount apply ho gaya!");
                     }
-                } catch (error) {
-                    console.log("Error checking coupon:", error);
-                    alert("System busy hai, thodi der baad try karein.");
-                }
+                    updatePrice();
+                } catch (e) { alert("Error checking coupon"); }
             } else {
-                alert("Galat Coupon Code!");
+                alert("Galat Coupon!");
             }
         }
 
-        // 2. Updated Place Order Function
         function placeOrder() {
             const n = document.getElementById('c-name').value;
             const ph = document.getElementById('c-phone').value;
@@ -195,73 +184,16 @@
                 time: new Date()
             })
             .then(async () => {
-                // Agar discount liya tha toh list mein daal do
                 if (isDiscounted) {
-                    try {
-                        await db.collection("used_coupons").doc(ph).set({ 
-                            used: true, 
-                            date: new Date() 
-                        });
-                    } catch(e) { console.log("Coupon record error"); }
+                    await db.collection("used_coupons").doc(ph).set({ used: true, date: new Date() });
                 }
-                
                 confetti(); 
-                alert("Order Successful! Thank You. Ab aap apni payment kar sakte hain."); 
+                alert("Order Successful!"); 
                 document.getElementById('search-phone').value = ph;
                 showSec('pay-screen');
                 loadUserOrders(); 
-            })
-            .catch((error) => {
-                alert("Order fail ho gaya: " + error.message);
             });
         }
-
-        // 3. Welcome Screen Fix (Safety Timer)
-        window.addEventListener('load', () => { 
-            setTimeout(() => { 
-                const overlay = document.getElementById('welcome-overlay');
-                if(overlay) overlay.classList.add('hidden-screen'); 
-            }, 2500); // 2.5 seconds baad pakka hat jayega
-        });
-
-
-     2. Ab 'placeOrder' function ko thoda update karna hoga taaki use record kiya ja sake
-// Apne purane placeOrder function ko isse badal dein:
-function placeOrder() {
-    const n = document.getElementById('c-name').value;
-    const ph = document.getElementById('c-phone').value;
-    const idea = document.getElementById('c-idea').value;
-
-    if (!n || !ph) return alert("Details bhariye!");
-
-    db.collection("orders").add({
-        name: n,
-        phone: ph,
-        price: finalPrice,
-        idea: idea,
-        couponUsed: isDiscounted, // Record rahega ki coupon use hua ya nahi
-        time: new Date()
-    })
-    .then(async () => {
-        // Agar discount use kiya hai, toh us number ko block list mein daal do
-        if (isDiscounted) {
-            await db.collection("used_coupons").doc(ph).set({ 
-                used: true, 
-                date: new Date() 
-            });
-        }
-        
-        confetti(); 
-        alert("Order Successful! Thank You."); 
-        document.getElementById('search-phone').value = ph;
-        showSec('pay-screen');
-        loadUserOrders(); 
-    });
-    
-            
-            
-            }
-        
 
         function showSec(id) {
             document.querySelectorAll('.view-sec').forEach(s => s.classList.remove('active'));
@@ -272,32 +204,19 @@ function placeOrder() {
             window.scrollTo(0,0);
         }
 
-        function placeOrder() {
-            const n = document.getElementById('c-name').value, ph = document.getElementById('c-phone').value;
-            if(!n || !ph) return alert("Details bhariye!");
-            db.collection("orders").add({ name: n, phone: ph, price: finalPrice, idea: document.getElementById('c-idea').value, time: new Date() })
-            .then(() => { 
-                confetti(); 
-                alert("Order Successful! Thank You. Ab aap apni payment kar sakte hain."); 
-                document.getElementById('search-phone').value = ph;
-                showSec('pay-screen');
-                loadUserOrders(); 
-            });
-        }
-
         function contactHelp() {
             window.open(`https://wa.me/${WHATSAPP_NO}?text=Hello Saif Studio, mujhe help chahiye.`);
         }
 
         function loadUserOrders() {
             const ph = document.getElementById('search-phone').value;
-            if(!ph) return alert("Search ke liye phone number daalein");
+            if(!ph) return alert("Phone number daalein");
             db.collection("orders").where("phone", "==", ph).onSnapshot(snap => {
                 const list = document.getElementById('user-orders-list');
                 list.innerHTML = snap.empty ? "<p class='font-bold opacity-30 mt-4'>Koi order nahi mila.</p>" : "";
                 snap.forEach(doc => {
                     const d = doc.data();
-                    list.innerHTML += `<div class="bg-indigo-50 p-5 rounded-3xl flex justify-between items-center border-2 border-indigo-100 shadow-sm animate-bounce-short">
+                    list.innerHTML += `<div class="bg-indigo-50 p-5 rounded-3xl flex justify-between items-center border-2 border-indigo-100 shadow-sm">
                         <div class="text-left"><p class="font-black text-indigo-900 text-2xl">₹${d.price}</p><p class="text-[9px] font-bold opacity-40 uppercase tracking-widest">Order Pending</p></div>
                         <a href="upi://pay?pa=${MY_UPI_ID}&pn=${MY_NAME}&am=${d.price}&cu=INR" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-black text-xs shadow-lg">PAY NOW</a>
                     </div>`;
@@ -333,8 +252,9 @@ function placeOrder() {
             tapCount++; 
             if(tapCount === 3) { 
                 tapCount = 0; 
-                if(prompt("Admin Key:") === "Saif2012") showSec('admin'); 
-                else alert("Wrong Key!");
+                let key = prompt("Admin Key:");
+                if(key === "Saif2012") showSec('admin'); 
+                else if(key !== null) alert("Wrong Key!");
             }
             setTimeout(() => { tapCount = 0; }, 2000);
         }
